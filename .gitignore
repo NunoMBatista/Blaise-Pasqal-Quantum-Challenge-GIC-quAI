@@ -6,6 +6,7 @@
 *.toc
 
 **/venv/
+**/env/
 **/.env/
 *.pyc
 
