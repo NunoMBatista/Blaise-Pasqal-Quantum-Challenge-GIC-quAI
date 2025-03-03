@@ -72,7 +72,7 @@ def pixel_to_graph(image):
         torch_geometric.data.data object representing the superpixel graph
 """
 def superpixel_to_graph(image, n_segments=100, compactness=10):
-    segments = slic(image, n_segments=n_segments, compactness=compactness, channel_axis=None)
+    segments = slic(image, n_segments=n_segments, compactness=compactness)
     regions = regionprops(segments + 1)
     centroids = []
     features = []

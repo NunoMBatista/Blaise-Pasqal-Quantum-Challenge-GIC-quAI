@@ -16,19 +16,14 @@ from graph_to_register import create_register_from_graph, graph_to_quantum_regis
 if __name__ == "__main__":
     # Test with a sample image
     try:
-        image_path = os.path.join("..", "images", "test.jpeg")\
-        
+        image_path = os.path.join("..", "images", "B.png")
+        image_path = os.path.join("..", "images", "test_edit.png")
+
         x, y = 64, 64
         image = load_image(image_path, size=(x, y))
         #if(image.shape != (x, y)):
         #    image = np.dot(image[...,:3], [0.2989, 0.5870, 0.1140])
         
-        
-        print(image.shape)
-        print(image)
-        # plot the image
-        plt.imshow(image, cmap='gray')
-        plt.show()
     except FileNotFoundError:
         print("Sample image not found, creating random image...")
         image = np.random.randint(0, 255, (50, 50, 3), dtype=np.uint8)
