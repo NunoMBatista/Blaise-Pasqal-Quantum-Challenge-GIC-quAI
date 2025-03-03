@@ -16,19 +16,19 @@ from graph_to_register import create_register_from_graph, graph_to_quantum_regis
 if __name__ == "__main__":
     # Test with a sample image
     try:
-        image_path = os.path.join("..", "images", "B.png")
-        image_path = os.path.join("..", "images", "test_edit.png")
+        image_path = os.path.join(os.path.dirname(__file__), "..", "dataset", "test_edit.png")
+        image_path = os.path.join(os.path.dirname(__file__), "..", "dataset", "B.png")
 
         x, y = 64, 64
         image = load_image(image_path, size=(x, y))
+    
         #if(image.shape != (x, y)):
         #    image = np.dot(image[...,:3], [0.2989, 0.5870, 0.1140])
         
     except FileNotFoundError:
         print("Sample image not found, creating random image...")
         image = np.random.randint(0, 255, (50, 50, 3), dtype=np.uint8)
-    
-    
+
     # Define scaling factors for different graph types
     pixel_scale = 10.0  # Needs to be larger because pixel graphs are dense
     superpixel_scale = 2.0
