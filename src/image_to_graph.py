@@ -282,29 +282,3 @@ def adaptive_superpixel_to_graph(image, n_segments=100, compactness=10, uniformi
                     for i, pos in enumerate(segment_nodes_pos):
                         _, indices = kdtree.query(pos, k=min(4, len(segment_nodes_pos)))
                         for j in indices[1:]:  # Skip self
-                            segment_edges.append([i + node_offset, j + node_offset])
-                            segment_edges.append([j + node_offset, i + node_offset])
-        
-        # Add segment nodes and edges to the overall graph
-        all_nodes_pos.extend(segment_nodes_pos)
-        all_nodes_features.extend(segment_nodes_features)
-        all_edges.extend(segment_edges)
-        
-        # Update node offset for next segment
-        node_offset += len(segment_nodes_pos)
-    
-    # Convert to PyTorch Geometric Data object
-    if not all_nodes_pos:
-        raise ValueError("No nodes were created. Try adjusting parameters.")
-    
-    x = torch.tensor(all_nodes_features, dtype=torch.float)
-    pos = torch.tensor(all_nodes_pos, dtype=torch.float)
-    
-    if all_edges:
-        edge_index = torch.tensor(all_edges, dtype=torch.long).t().contiguous()
-    else:
-        edge_index = torch.zeros((2, 0), dtype=torch.long)
-    
-    return Data(x=x, edge_index=edge_index, pos=pos)
-
-
