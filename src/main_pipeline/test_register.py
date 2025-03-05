@@ -14,7 +14,7 @@ from graph_to_register import create_register_from_graph, graph_to_quantum_regis
 if __name__ == "__main__":
     # Test with a sample image
     try:
-        image_path = os.path.join(os.path.dirname(__file__), "..", "dataset", "test.jpeg")
+        image_path = os.path.join(os.path.dirname(__file__), "..", "dataset", "test_edit.png")
         x, y = 64, 64
         image = load_image(image_path, size=(x, y))
     except FileNotFoundError:

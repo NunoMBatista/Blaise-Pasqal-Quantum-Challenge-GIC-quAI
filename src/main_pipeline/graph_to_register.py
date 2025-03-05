@@ -23,7 +23,7 @@ from sklearn.preprocessing import StandardScaler
     output: 
         a pulser register with atoms positioned according to graph nodes and texture metadata
 """
-def create_register_from_graph(graph_data, device=AnalogDevice, scale_factor=5.0, min_distance=4.0, texture_feature="energy"):
+def create_register_from_graph(graph_data, device=AnalogDevice, scale_factor=5.0, min_distance=4.0, texture_feature="pca"):
     # Extract node positions from the graph
     if not hasattr(graph_data, 'pos') or graph_data.pos is None:
         raise ValueError("Graph data must have position information (pos attribute)")
@@ -164,7 +164,7 @@ def create_register_from_graph(graph_data, device=AnalogDevice, scale_factor=5.0
     output: 
         a pulser register object
 """
-def graph_to_quantum_register(graph_data, scale_factor=5.0, device=AnalogDevice, texture_feature="energy"):
+def graph_to_quantum_register(graph_data, scale_factor=5.0, device=AnalogDevice, texture_feature="pca"):
     # Adjust scale factor based on graph size to fit device constraints
     num_nodes = graph_data.num_nodes
     max_radius = getattr(device, 'max_distance_from_center', 35.0)
@@ -269,7 +269,7 @@ def visualize_register_with_connections(register, graph_data=None, title="atom r
     output:
         combined texture values as numpy array
 """
-def extract_combined_texture_features(graph_data):
+def extract_combined_texture_features(graph_data, verbose=False):
     if not hasattr(graph_data, 'texture_info') or graph_data.texture_info is None:
         return None
     
@@ -307,7 +307,8 @@ def extract_combined_texture_features(graph_data):
     
     # Get explained variance to report
     explained_variance = pca.explained_variance_ratio_[0]
-    print(f"PCA first component explains {explained_variance:.2%} of texture variation")
+    if(verbose == True):
+        print(f"PCA first component explains {explained_variance:.2%} of texture variation")
     
     return normalized_pca
 
