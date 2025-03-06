@@ -31,7 +31,7 @@ print(f"Loading data from:\n- No polyp: {no_polyp_dir}\n- Polyp: {polyp_dir}")
 no_polyp_dataset = ImageGraphDataset(
     img_dir=no_polyp_dir,
     max_samples=200,
-    n_segments=20,
+    n_segments=10,
     use_superpixels=True,
     label=0  # Label 0 for no polyp
 )
