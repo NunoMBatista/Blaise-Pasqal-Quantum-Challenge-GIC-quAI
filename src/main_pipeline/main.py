@@ -27,19 +27,23 @@ no_polyp_dir = os.path.join(os.getcwd(), 'dataset', 'synthetic_colon_data', 'no_
 polyp_dir = os.path.join(os.getcwd(), 'dataset', 'synthetic_colon_data', 'polyp')
 print(f"Loading data from:\n- No polyp: {no_polyp_dir}\n- Polyp: {polyp_dir}")
 
+plt.ion()
+
+
+N_QUBITS = 20
 # Create datasets for each class (with labels)
 no_polyp_dataset = ImageGraphDataset(
     img_dir=no_polyp_dir,
     max_samples=200,
-    n_segments=10,
+    n_segments=N_QUBITS,
     use_superpixels=True,
     label=0  # Label 0 for no polyp
 )
 
 polyp_dataset = ImageGraphDataset(
     img_dir=polyp_dir,
-    max_samples=20,
-    n_segments=20,
+    max_samples=200,
+    n_segments=N_QUBITS,
     use_superpixels=True,
     label=1  # Label 1 for polyp
 )
@@ -210,7 +214,11 @@ from sklearn.svm import SVC
 
 # Define a Support Vector Machine classifier with the Quantum Evolution Kernel
 qek_kernel = QEK(mu=0.5)
-model = SVC(kernel=qek_kernel, random_state=42)
+model = SVC(
+    kernel=qek_kernel, 
+    random_state=42,
+    class_weight='balanced'
+)
 
 model.fit(X_train, y_train)
 
