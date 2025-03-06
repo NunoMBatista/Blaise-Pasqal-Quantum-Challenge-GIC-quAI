@@ -12,7 +12,7 @@ import numpy as np
 
 class ImageGraphDataset(Dataset):
     def __init__(self, img_dir, transform=None, pre_transform=None, max_samples=100, 
-                 n_segments=20, use_superpixels=True):
+                 n_segments=20, use_superpixels=True, label=None):
         """
         Creates a dataset of graphs from images.
 
@@ -23,12 +23,14 @@ class ImageGraphDataset(Dataset):
             max_samples (int): Maximum number of samples to include.
             n_segments (int): Number of superpixels for segmentation.
             use_superpixels (bool): Whether to use superpixel segmentation or pixel-based graphs.
+            label (int, optional): Class label to assign to all samples. If None, will try to determine from filename.
         """
         super().__init__(transform, pre_transform)
         self.img_dir = img_dir
         self.max_samples = max_samples
         self.n_segments = n_segments
         self.use_superpixels = use_superpixels
+        self.label = label
         
         # Find all image files in the directory
         img_extensions = ['*.jpg', '*.jpeg', '*.png', '*.bmp']
@@ -59,8 +61,15 @@ class ImageGraphDataset(Dataset):
                 # Add filename as metadata
                 graph.filename = Path(path).name
                 
-                # Add a random binary label (can be changed for real classification tasks)
-                graph.y = torch.tensor([1 if np.random.rand() > 0.5 else 0], dtype=torch.long)
+                # Determine the class label
+                if self.label is not None:
+                    # Use the provided label
+                    graph.y = torch.tensor([self.label], dtype=torch.long)
+                else:
+                    # Try to determine from filename (example: polyp in filename means class 1)
+                    filename = Path(path).name.lower()
+                    label = 1 if "polyp" in filename else 0
+                    graph.y = torch.tensor([label], dtype=torch.long)
                 
                 self.graphs.append(graph)
             except Exception as e:
