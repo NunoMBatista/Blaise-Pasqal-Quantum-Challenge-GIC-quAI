@@ -36,10 +36,9 @@ plt.ion()
 
 # TODO: ?? DYNAMICALLY CHANGE THE ATOM REGISTER SIZE BASED ON THE IMAGE SIZE ??
 
-N_QUBITS = 5
+N_QUBITS = 10
 MAX_SAMPLES = 20
 REGISTER_DIM = 40 # X*X μm dimension of qubitsA
-
 
 
 # Create datasets for each class (with labels)
@@ -103,6 +102,12 @@ for i, data in enumerate(tqdm(combined_dataset)):
 # Compile graphs to pulse and register
 compiled = []
 
+# Add debug information about device
+print(f"\nUsing device: {pl.MockDevice.name}")
+if hasattr(pl.MockDevice, 'channel_objects'):
+    print(f"Available channels: {pl.MockDevice.channel_objects}")
+else:
+    print("Note: Device does not expose available_channels attribute")
 
 for i, graph in enumerate(tqdm(graphs_to_compile)):
     try:
@@ -121,13 +126,19 @@ for i, graph in enumerate(tqdm(graphs_to_compile)):
         # Assign the register to the graph and compile pulse
         register = custom_register  # Use our custom register
         graph.register = register   # Assign it to the graph
-        pulse = graph.compile_pulse(use_texture=True)
         
-        # Store the successful compilation
-        compiled.append((graph, original_graph_data, pulse))
-    except CompilationError as e:
-        # Skip
-        print(f"Graph {graph.id} failed compilation. Error: {e}")
+        try:
+            pulse = graph.compile_pulse(use_texture=True)
+            
+            # Store the successful compilation
+            compiled.append((graph, original_graph_data, pulse))
+        except Exception as e:
+            print(f"Compilation error for graph {graph.id}: {str(e)}")
+            # Try to provide more diagnostic information
+            print(f"Register has {len(register.qubits)} atoms")
+            if hasattr(graph.device, 'available_channels'):
+                print(f"Device channels: {graph.device.channels}")
+            
     except Exception as e:
         print(f"Unexpected error during compilation for graph {graph.id}: {str(e)}")
         
@@ -145,9 +156,6 @@ print(compiled[2])
 example_graph, example_data, example_pulse = compiled[2]
 fig = visualize_texture_pulse_effects(example_graph, example_pulse, example_data)
 fig.show()
-#example_register = example_graph.register
-#example_register.draw(blockade_radius=pl.AnalogDevice.max_radial_distance + 0.01)
-#example_pulse.draw()
 
 
 """
@@ -156,20 +164,30 @@ EXECUTING ON AN EMULATOR
 
 from qek.data.processed_data import ProcessedData
 from qek.backends import QutipBackend
+# Import our new compatibility utilities
+from qek_backend_utils import prepare_for_qek_backend, create_compatible_pulse
 
 processed_dataset = []
 executor = QutipBackend(device=pl.MockDevice)
 
 async def process_graphs():
-    for graph, original_data, pulse in tqdm(compiled):
-        states = await executor.run(register=graph.register, pulse=pulse)
-        processed_dataset.append(ProcessedData.from_register(
-            register=graph.register,
-            pulse=pulse,
-            device=pl.MockDevice,
-            state_dict=states,
-            target=graph.target
-        ))
+    for graph, original_data, sequence in tqdm(compiled):
+        try:
+            # Create a compatible pulse for the backend
+            register, compatible_pulse = prepare_for_qek_backend(graph, sequence)
+            
+            # Run with the compatible objects
+            states = await executor.run(register=register, pulse=compatible_pulse)
+            
+            processed_dataset.append(ProcessedData.from_register(
+                register=graph.register,
+                pulse=compatible_pulse,
+                device=pl.MockDevice,
+                state_dict=states,
+                target=graph.target
+            ))
+        except Exception as e:
+            print(f"Error processing graph {graph.id}: {str(e)}")
 
 import asyncio
 asyncio.run(process_graphs())
@@ -197,7 +215,7 @@ for data in processed_dataset:
     label = data.target
     class_counts[label] = class_counts.get(label, 0) + 1
 print(f"No polyp (0): {class_counts.get(0, 0)}")
-print(f"Polyp (1): {class_counts.get(1, 0)}")
+print(f"Polyp (1): {class_counts.get(1, 1)}")
 
 # Use stratified split to maintain class balance
 X_train, X_test, y_train, y_test = train_test_split(
@@ -250,10 +268,49 @@ y_pred = model.predict(X_test)
 
 from sklearn.metrics import f1_score, balanced_accuracy_score, confusion_matrix, classification_report
 
+# Add more diagnostics about the model predictions
+print("\nModel Prediction Analysis:")
+unique_predictions = np.unique(y_pred)
+print(f"Unique predicted classes: {unique_predictions}")
+print(f"Number of predictions for each class: {np.bincount(y_pred if isinstance(y_pred, np.ndarray) else np.array(y_pred, dtype=int))}")
+print(f"True class distribution: {np.bincount(y_test if isinstance(y_test, np.ndarray) else np.array(y_test, dtype=int))}")
+
+# Add probability estimates if the model supports it
+if hasattr(model, 'predict_proba'):
+    try:
+        proba = model.predict_proba(X_test)
+        print("\nPrediction probabilities:")
+        print(f"Mean probability for class 0: {np.mean(proba[:, 0]):.4f}")
+        print(f"Mean probability for class 1: {np.mean(proba[:, 1]):.4f}")
+    except Exception as e:
+        print(f"Could not get prediction probabilities: {e}")
+
 print("\nEvaluation Results:")
-print(f"F1 Score: {f1_score(y_test, y_pred, average='weighted')}")
+# Set zero_division to avoid warnings
+print(f"F1 Score: {f1_score(y_test, y_pred, average='weighted', zero_division=0)}")
 print(f"Balanced Accuracy Score: {balanced_accuracy_score(y_test, y_pred)}")
 print("\nConfusion Matrix:")
 print(confusion_matrix(y_test, y_pred))
 print("\nClassification Report:")
-print(classification_report(y_test, y_pred, target_names=['No Polyp', 'Polyp']))
+print(classification_report(y_test, y_pred, target_names=['No Polyp', 'Polyp'], zero_division=0))
+
+# Add a recommendation for small datasets
+print("\nNote: For small datasets, consider using:")
+print("1. Cross-validation instead of a single train-test split")
+print("2. Regularization parameters in the SVM (C parameter)")
+print("3. Different kernel parameters (mu value)")
+
+# Optional: Add a cross-validation version
+from sklearn.model_selection import cross_val_score, KFold
+if len(X) >= 10:  # Only run cross-validation if we have enough data
+    print("\nRunning 5-fold cross-validation to get a more robust assessment:")
+    try:
+        cv_scores = cross_val_score(
+            model, 
+            X, y, 
+            cv=min(5, len(np.unique(y))), 
+            scoring='balanced_accuracy'
+        )
+        print(f"Cross-validation balanced accuracy: {np.mean(cv_scores):.4f} ± {np.std(cv_scores):.4f}")
+    except Exception as e:
+        print(f"Could not run cross-validation: {e}")

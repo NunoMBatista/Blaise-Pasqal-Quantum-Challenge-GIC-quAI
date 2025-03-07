@@ -22,54 +22,21 @@ class TextureAwareGraph(BaseGraph):
             
     def compile_pulse(self, use_texture=True):
         """
-        Create a pulse that encodes texture information.
+        Create a sequence of pulses that encodes texture information for each node.
         
         Args:
             use_texture: Whether to use texture information to modify pulses
             
         Returns:
-            A Pulse object (not a Sequence) with texture-dependent parameters
+            A Sequence object with node-specific texture-dependent pulses
         """
-        if not hasattr(self, 'register'):
-            self.register = self.compile_register()
-            
-        # Check if register has texture metadata
-        has_texture = (hasattr(self.register, 'metadata') and 
-                    self.register.metadata is not None and 
-                    'texture_features' in self.register.metadata)
-        
-        # Extract texture features and determine pulse parameters
-        if has_texture and use_texture:
-            texture_features = self.register.metadata['texture_features']
-            avg_texture = np.mean([val for val in texture_features.values()])
-            
-            # Scale parameters based on average texture
-            duration = int(self.base_duration * (0.75 + 0.5 * avg_texture))
-            amplitude = self.base_amplitude * (0.8 + 0.4 * avg_texture)
-        else:
-            # Default parameters
-            duration = self.base_duration
-            amplitude = self.base_amplitude
-        
-        # Looking at the error, ConstantAmplitude doesn't take duration directly
-        # Instead, it likely takes amplitude, phase, and detuning waveform
-        
-        # Create detuning ramp waveform with the duration
-        detuning = RampWaveform(duration, 0, 0)
-        
-        # Create and return a single Pulse object with proper parameters
-        pulse = Pulse.ConstantAmplitude(
-            amplitude=amplitude,
-            detuning=detuning,
-            phase=0.0
-        )
-        
-        return pulse
+        # Generate the full sequence with node-specific pulses
+        sequence = self.create_texture_sequence(use_texture=use_texture)
+        return sequence  # Note: This returns a Sequence, not a Pulse
         
     def create_texture_sequence(self, use_texture=True):
         """
-        Create a full sequence that encodes texture information.
-        This is separate from compile_pulse and can be used for visualization.
+        Create a full sequence that encodes texture information with node-specific pulses.
         """
         if not hasattr(self, 'register'):
             self.register = self.compile_register()
@@ -77,51 +44,124 @@ class TextureAwareGraph(BaseGraph):
         # Start building a sequence
         seq = Sequence(self.register, self.device)
         
-        # Check available channels
-        available_channels = self.device.channels
-        #print(f"Available channels: {available_channels}")
-        
         # Check if register has texture metadata
         has_texture = (hasattr(self.register, 'metadata') and 
                       self.register.metadata is not None and 
                       'texture_features' in self.register.metadata)
         
-        if has_texture and use_texture and 'rydberg_global' in available_channels:
-            # Extract texture features
-            texture_features = self.register.metadata['texture_features']
-            avg_texture = np.mean([val for val in texture_features.values()])
+        # Get available channels from device
+        available_channels = ['raman_local']
+        # if hasattr(self.device, 'channels'):
+        #     available_channels = self.device.channels
+        # else:
+        #     # For MockDevice or devices where channels are defined differently
+        #     # This is a more general approach that should work with most devices
+        #     device_attrs = dir(self.device)
+        #     channel_attrs = [attr for attr in device_attrs if 'channel' in attr.lower() and not attr.startswith('__')]
             
-            # Declare global channel
-            seq.declare_channel('global', 'rydberg_global')
-            
-            # Create pulse with texture-modulated parameters
-            duration = int(self.base_duration * (0.75 + 0.5 * avg_texture))
-            amplitude = self.base_amplitude * (0.8 + 0.4 * avg_texture)
-            
-            pulse = Pulse.ConstantAmplitude(
-                amplitude=amplitude,
-                detuning=RampWaveform(duration, 0, 0),
-                phase=0.0
-            )
-            
-            seq.add(pulse, 'global')
-        else:
-            # Fallback to default pulse on first available channel
+        #     # Try different ways of accessing channels
+        #     for attr in channel_attrs:
+        #         channels_obj = getattr(self.device, attr, None)
+        #         if isinstance(channels_obj, (list, tuple, set)):
+        #             available_channels = list(channels_obj)
+        #             break
+        #         elif isinstance(channels_obj, dict):
+        #             available_channels = list(channels_obj.keys())
+        #             break
+        
+        print(available_channels)
+        
+        # Find an appropriate channel
+        channel_name = None
+        
+        # First try for raman_local channel
+        if 'raman_local' in available_channels:
+            channel_name = 'raman_local'
+        # Then look for any local channel
+        elif any('_local' in ch for ch in available_channels):
+            local_channels = [ch for ch in available_channels if '_local' in ch]
+            channel_name = local_channels[0]
+        # Then just use raman_global if available
+        elif 'raman_global' in available_channels:
+            channel_name = 'raman_global'
+        # Last resort: use the first available channel
+        elif available_channels:
             channel_name = available_channels[0]
-            seq.declare_channel('global', channel_name)
+        else:
+            # If we still can't find a channel, use fixed default channels that should exist
+            # Default channels that typically exist in Pulser devices
+            default_channels = ['rydberg_global', 'ground_rydberg', 'digital']
+            for ch in default_channels:
+                try:
+                    # Try declaring and see if it works
+                    test_seq = Sequence(self.register, self.device)
+                    test_seq.declare_channel('ch', ch)
+                    channel_name = ch
+                    break
+                except Exception:
+                    continue
+            
+            # If still no channel found, raise a descriptive error
+            if channel_name is None:
+                raise ValueError(f"Could not determine valid channel for device {self.device.id}. "
+                                f"Available channels detection failed.")
+        
+        # Now declare the channel with proper error handling
+        try:
+            seq.declare_channel('pulse_channel', channel_name)
+        except Exception as e:
+            raise ValueError(f"Error declaring channel '{channel_name}': {str(e)}. "
+                            f"Available channels: {available_channels}")
+            
+        # Get all atoms in the register
+        atoms = list(self.register.qubits.keys())
+        
+        if has_texture and use_texture:
+            # Extract texture features for each node
+            texture_features = self.register.metadata.get('texture_features', {})
+            
+            # Default texture value if not available
+            default_texture = 0.5
+            
+            # Target all atoms at once for the pulse_channel
+            seq.target(atoms, 'pulse_channel')
+            
+            for atom in atoms:
+                # Get this node's texture value or use default
+                node_texture = texture_features.get(atom, default_texture)
+                
+                # Scale duration based on texture value
+                duration = int(self.base_duration * (0.5 + node_texture))
+                
+                # Create node-specific pulse with duration proportional to texture
+                pulse = Pulse.ConstantAmplitude(
+                    amplitude=self.base_amplitude,
+                    detuning=RampWaveform(duration, 0, 0),
+                    phase=0.0
+                )
+
+                                
+                # Add pulse to the properly targeted channel
+                seq.add(pulse, 'pulse_channel')
+                #seq.delay('pulse_channel', 10)  # Small delay between consecutive pulses
+        else:
+            # If no texture info, use default pulses for all atoms
+            # Target all atoms at once
+            seq.target(atoms, 'pulse_channel')
             
             pulse = Pulse.ConstantAmplitude(
                 amplitude=self.base_amplitude,
                 detuning=RampWaveform(self.base_duration, 0, 0),
                 phase=0.0
             )
-            
-            seq.add(pulse, 'global')
+            seq.add(pulse, 'pulse_channel')
         
         # Add measurement if supported
         try:
-            seq.measure("ground-rydberg")
+            #seq.measure("ground-rydberg")
+            seq.measure("digital") # FOR RAMAN
         except Exception as e:
+            # Just log the error but don't fail if measurement isn't supported
             print(f"Warning: Could not add measurement: {str(e)}")
         
-        return seq.build()
+        return seq

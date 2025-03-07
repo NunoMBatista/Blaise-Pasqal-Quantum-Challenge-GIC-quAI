@@ -165,7 +165,7 @@ def create_register_from_graph(graph_data, device=MockDevice, scale_factor=5.0, 
     output: 
         a pulser register object
 """
-def graph_to_quantum_register(graph_data, scale_factor=5.0, device=MockDevice, texture_feature="pca", register_dim=None):
+def graph_to_quantum_register(graph_data, scale_factor=5.0, device=MockDevice, texture_feature="pca", register_dim=None, verbose=False):
     # Get device constraints
     max_radius = getattr(device, 'max_distance_from_center', 35.0)
     
@@ -184,9 +184,11 @@ def graph_to_quantum_register(graph_data, scale_factor=5.0, device=MockDevice, t
             if max_dimension > 0:
                 # Adjust scale factor to fit within register_dim
                 scale_factor = register_dim / max_dimension
-                print(f"Calculated scale factor to fit {register_dim}×{register_dim} μm area: {scale_factor:.4f}")
+                if verbose: 
+                    print(f"Calculated scale factor to fit {register_dim}×{register_dim} μm area: {scale_factor:.4f}")
             else:
-                print(f"Warning: Graph positions have zero spread, using default scale factor: {scale_factor}")
+                if verbose: 
+                    print(f"Warning: Graph positions have zero spread, using default scale factor: {scale_factor}")
     
     # Adjust scale factor based on graph size to fit device constraints
     num_nodes = graph_data.num_nodes
