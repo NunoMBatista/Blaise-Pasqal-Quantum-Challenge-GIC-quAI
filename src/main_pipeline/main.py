@@ -22,6 +22,9 @@ import os
 from image_graph_dataset import ImageGraphDataset
 from compatibility_utils import make_compatible_with_analog_device
 
+from texture_aware_graph import TextureAwareGraph
+from visualization import visualize_texture_pulse_effects
+
 # Specify the directories 
 no_polyp_dir = os.path.join(os.getcwd(), 'dataset', 'synthetic_colon_data', 'no_polyp')
 polyp_dir = os.path.join(os.getcwd(), 'dataset', 'synthetic_colon_data', 'polyp')
@@ -31,10 +34,10 @@ print(f"Loading data from:\n- No polyp: {no_polyp_dir}\n- Polyp: {polyp_dir}")
 # COMMENT THIS LINE TO TURN ON EXAMPLE DISPLAYS
 plt.ion()
 
-# TODO: DYNAMICALLY CHANGE THE ATOM REGISTER SIZE BASED ON THE IMAGE SIZE
+# TODO: ?? DYNAMICALLY CHANGE THE ATOM REGISTER SIZE BASED ON THE IMAGE SIZE ??
 
-N_QUBITS = 20
-MAX_SAMPLES = 200
+N_QUBITS = 5
+MAX_SAMPLES = 5
 REGISTER_DIM = 40 # X*X μm dimension of qubitsA
 
 
@@ -80,11 +83,14 @@ for i, data in enumerate(tqdm(combined_dataset)):
         original_data.append(compatible_data)  # Store the compatible version for later
         
         # Create BaseGraph - Note: BaseGraph stores data in pyg attribute, not data
-        graph = qek_graphs.BaseGraph(
+        # TextureAwareGraph is an extension of the BaseGraph that encodes texture info
+        
+        graph = TextureAwareGraph(
             id=i,
             data=compatible_data,
-            device=pl.AnalogDevice
+            device=pl.MockDevice
         )
+        
         graph.target = compatible_data.y.item()  # Preserve the class label
         graphs_to_compile.append(graph)
     except ValueError as e:
@@ -97,6 +103,7 @@ for i, data in enumerate(tqdm(combined_dataset)):
 # Compile graphs to pulse and register
 compiled = []
 
+
 for i, graph in enumerate(tqdm(graphs_to_compile)):
     try:
         # Access the graph data from original_data which preserves the texture info
@@ -104,6 +111,7 @@ for i, graph in enumerate(tqdm(graphs_to_compile)):
         
         # Custom register compilation using our texture-aware function
         original_graph_data = original_data[i]
+
         custom_register = graph_to_quantum_register(
             original_graph_data, 
             texture_feature="pca",
@@ -113,7 +121,7 @@ for i, graph in enumerate(tqdm(graphs_to_compile)):
         # Assign the register to the graph and compile pulse
         register = custom_register  # Use our custom register
         graph.register = register   # Assign it to the graph
-        pulse = graph.compile_pulse()
+        pulse = graph.compile_pulse(use_texture=True)
         
         # Store the successful compilation
         compiled.append((graph, original_graph_data, pulse))
@@ -126,12 +134,20 @@ for i, graph in enumerate(tqdm(graphs_to_compile)):
 print(f"Compiled {len(compiled)} graphs out of {len(graphs_to_compile)}.")
         
 
+# When you want to visualize the full sequence:
+example_graph, example_data, example_pulse = compiled[2]
+
+# Create a sequence for visualization purposes
+example_sequence = example_graph.create_texture_sequence(use_texture=True)
+example_sequence.draw()
 
 print(compiled[2])
 example_graph, example_data, example_pulse = compiled[2]
-example_register = example_graph.register
-example_register.draw(blockade_radius=pl.AnalogDevice.max_radial_distance + 0.01)
-example_pulse.draw()
+fig = visualize_texture_pulse_effects(example_graph, example_pulse, example_data)
+fig.show()
+#example_register = example_graph.register
+#example_register.draw(blockade_radius=pl.AnalogDevice.max_radial_distance + 0.01)
+#example_pulse.draw()
 
 
 """
@@ -142,7 +158,7 @@ from qek.data.processed_data import ProcessedData
 from qek.backends import QutipBackend
 
 processed_dataset = []
-executor = QutipBackend(device=pl.AnalogDevice)
+executor = QutipBackend(device=pl.MockDevice)
 
 async def process_graphs():
     for graph, original_data, pulse in tqdm(compiled):
@@ -150,7 +166,7 @@ async def process_graphs():
         processed_dataset.append(ProcessedData.from_register(
             register=graph.register,
             pulse=pulse,
-            device=pl.AnalogDevice,
+            device=pl.MockDevice,
             state_dict=states,
             target=graph.target
         ))
