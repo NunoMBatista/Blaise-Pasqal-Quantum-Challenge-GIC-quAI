@@ -172,22 +172,27 @@ from qek.backends import QutipBackend
 # Import our compatibility utilities
 from qek_backend_utils import prepare_for_qek_backend, create_compatible_pulse, configure_backend_for_stability
 from qek_solver_options import ODESolverOptions
+# Import new ODE solver utilities
+from ode_solver_utils import configure_backend_with_options, safe_quantum_execution
 
 processed_dataset = []
-# Configure the executor with better ODE solver settings upfront
-executor = QutipBackend(device=pl.MockDevice)
-# Configure the executor for stability with higher nsteps
-executor = configure_backend_for_stability(executor, nsteps=50000)
+# Configure the executor with better initial settings
+executor = configure_backend_with_options(nsteps=50000)
 
 async def process_graphs():
-    for graph, original_data, sequence in tqdm(compiled):
+    for graph_idx, (graph, original_data, sequence) in enumerate(tqdm(compiled)):
         try:
             # Create a compatible pulse for the backend
             register, compatible_pulse = prepare_for_qek_backend(graph, sequence)
             
             try:
-                # Run with the compatible objects
-                states = await executor.run(register=register, pulse=compatible_pulse)
+                # Use our safe execution method instead of direct execution
+                states = await safe_quantum_execution(
+                    executor=executor,
+                    register=register,
+                    pulse=compatible_pulse,
+                    max_attempts=5
+                )
                 
                 processed_dataset.append(ProcessedData.from_register(
                     register=graph.register,
@@ -197,24 +202,11 @@ async def process_graphs():
                     target=graph.target
                 ))
             except Exception as e:
-                if "Excess work done" in str(e):
-                    print(f"ODE solver error with graph {graph.id}, retrying with higher nsteps...")
-                    # Configure with even higher nsteps for this specific difficult case
-                    temp_executor = configure_backend_for_stability(QutipBackend(device=pl.MockDevice), nsteps=250000)
-                    states = await temp_executor.run(register=register, pulse=compatible_pulse)
-                    
-                    processed_dataset.append(ProcessedData.from_register(
-                        register=graph.register,
-                        pulse=compatible_pulse,
-                        device=pl.MockDevice,
-                        state_dict=states,
-                        target=graph.target
-                    ))
-                else:
-                    raise e
+                print(f"All attempts failed for graph {graph.id} (index {graph_idx}): {str(e)}")
+                print(f"Skipping graph {graph.id} and continuing with the next one.")
                     
         except Exception as e:
-            print(f"Error processing graph {graph.id}: {str(e)}")
+            print(f"Error preparing graph {graph.id} (index {graph_idx}): {str(e)}")
             # Continue with other graphs even if one fails
 
 import asyncio
