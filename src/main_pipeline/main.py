@@ -27,14 +27,22 @@ no_polyp_dir = os.path.join(os.getcwd(), 'dataset', 'synthetic_colon_data', 'no_
 polyp_dir = os.path.join(os.getcwd(), 'dataset', 'synthetic_colon_data', 'polyp')
 print(f"Loading data from:\n- No polyp: {no_polyp_dir}\n- Polyp: {polyp_dir}")
 
+
+# COMMENT THIS LINE TO TURN ON EXAMPLE DISPLAYS
 plt.ion()
 
+# TODO: DYNAMICALLY CHANGE THE ATOM REGISTER SIZE BASED ON THE IMAGE SIZE
 
 N_QUBITS = 20
+MAX_SAMPLES = 200
+REGISTER_DIM = 40 # X*X μm dimension of qubitsA
+
+
+
 # Create datasets for each class (with labels)
 no_polyp_dataset = ImageGraphDataset(
     img_dir=no_polyp_dir,
-    max_samples=200,
+    max_samples=MAX_SAMPLES,
     n_segments=N_QUBITS,
     use_superpixels=True,
     label=0  # Label 0 for no polyp
@@ -42,7 +50,7 @@ no_polyp_dataset = ImageGraphDataset(
 
 polyp_dataset = ImageGraphDataset(
     img_dir=polyp_dir,
-    max_samples=200,
+    max_samples=MAX_SAMPLES,
     n_segments=N_QUBITS,
     use_superpixels=True,
     label=1  # Label 1 for polyp
@@ -57,7 +65,7 @@ print(f"""
     - No Polyp Graphs: {len(no_polyp_dataset)}
     - Polyp Graphs: {len(polyp_dataset)}
     - Total Graphs: {len(combined_dataset)}
-    
+
 -------------------------------------------
     """)
 
@@ -99,7 +107,7 @@ for i, graph in enumerate(tqdm(graphs_to_compile)):
         custom_register = graph_to_quantum_register(
             original_graph_data, 
             texture_feature="pca",
-            scale_factor=5
+            register_dim=REGISTER_DIM  # Pass the REGISTER_DIM to control register size
         )
         
         # Assign the register to the graph and compile pulse

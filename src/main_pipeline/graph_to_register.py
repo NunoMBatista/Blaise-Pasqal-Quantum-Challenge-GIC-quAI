@@ -161,13 +161,35 @@ def create_register_from_graph(graph_data, device=AnalogDevice, scale_factor=5.0
         scale_factor - factor to scale positions
         device - pulser device
         texture_feature - which texture feature to use for visualization
+        register_dim - desired dimension of the register (square area in μm)
     output: 
         a pulser register object
 """
-def graph_to_quantum_register(graph_data, scale_factor=5.0, device=AnalogDevice, texture_feature="pca"):
+def graph_to_quantum_register(graph_data, scale_factor=5.0, device=AnalogDevice, texture_feature="pca", register_dim=None):
+    # Get device constraints
+    max_radius = getattr(device, 'max_distance_from_center', 35.0)
+    
+    # Check if register_dim is specified to override scale_factor
+    if register_dim is not None:
+        if hasattr(graph_data, 'pos') and graph_data.pos is not None:
+            pos = graph_data.pos.numpy()
+            # Calculate the current spread of positions
+            min_pos = np.min(pos, axis=0)
+            max_pos = np.max(pos, axis=0)
+            current_width = max_pos[0] - min_pos[0]
+            current_height = max_pos[1] - min_pos[1]
+            
+            # Calculate the larger dimension to preserve aspect ratio
+            max_dimension = max(current_width, current_height)
+            if max_dimension > 0:
+                # Adjust scale factor to fit within register_dim
+                scale_factor = register_dim / max_dimension
+                print(f"Calculated scale factor to fit {register_dim}×{register_dim} μm area: {scale_factor:.4f}")
+            else:
+                print(f"Warning: Graph positions have zero spread, using default scale factor: {scale_factor}")
+    
     # Adjust scale factor based on graph size to fit device constraints
     num_nodes = graph_data.num_nodes
-    max_radius = getattr(device, 'max_distance_from_center', 35.0)
     
     # Auto-adjust scale factor if there are too many nodes or they're too spread out
     if num_nodes > 25:
@@ -183,7 +205,7 @@ def graph_to_quantum_register(graph_data, scale_factor=5.0, device=AnalogDevice,
         # If positions would be outside max radius, reduce scale factor
         if max_dist * scale_factor > max_radius:
             adjusted_scale = max_radius / max_dist * 0.9  # 10% safety margin
-            print(f"Reducing scale factor from {scale_factor} to {adjusted_scale:.2f} to fit device constraints")
+            print(f"Reducing scale factor from {scale_factor:.4f} to {adjusted_scale:.4f} to fit device constraints")
             scale_factor = adjusted_scale
     
     # Create the register from graph positions
