@@ -37,8 +37,8 @@ plt.ion()
 # TODO: ?? DYNAMICALLY CHANGE THE ATOM REGISTER SIZE BASED ON THE IMAGE SIZE ??
 
 N_QUBITS = 10
-MAX_SAMPLES = 20
-REGISTER_DIM = 40 # X*X μm dimension of qubitsA
+MAX_SAMPLES = 200
+REGISTER_DIM = 20 # X*X μm dimension of qubitsA
 
 
 # Create datasets for each class (with labels)
@@ -146,16 +146,21 @@ print(f"Compiled {len(compiled)} graphs out of {len(graphs_to_compile)}.")
         
 
 # When you want to visualize the full sequence:
-example_graph, example_data, example_pulse = compiled[2]
-
-# Create a sequence for visualization purposes
-example_sequence = example_graph.create_texture_sequence(use_texture=True)
-example_sequence.draw()
-
-print(compiled[2])
-example_graph, example_data, example_pulse = compiled[2]
-fig = visualize_texture_pulse_effects(example_graph, example_pulse, example_data)
-fig.show()
+try:
+    example_graph, example_data, example_pulse = compiled[2]
+    
+    # Create a sequence for visualization purposes
+    example_sequence = example_graph.create_texture_sequence(use_texture=True)
+    
+    # Try to visualize the sequence 
+    example_sequence.draw()
+    
+    # Instead of using the pulse, use the sequence for visualization
+    # This is better because the sequence contains channel and targeting information
+    fig = visualize_texture_pulse_effects(example_graph, example_sequence, example_data)
+    fig.show()
+except Exception as e:
+    print(f"Error during visualization: {str(e)}")
 
 
 """
@@ -164,11 +169,15 @@ EXECUTING ON AN EMULATOR
 
 from qek.data.processed_data import ProcessedData
 from qek.backends import QutipBackend
-# Import our new compatibility utilities
-from qek_backend_utils import prepare_for_qek_backend, create_compatible_pulse
+# Import our compatibility utilities
+from qek_backend_utils import prepare_for_qek_backend, create_compatible_pulse, configure_backend_for_stability
+from qek_solver_options import ODESolverOptions
 
 processed_dataset = []
+# Configure the executor with better ODE solver settings upfront
 executor = QutipBackend(device=pl.MockDevice)
+# Configure the executor for stability with higher nsteps
+executor = configure_backend_for_stability(executor, nsteps=50000)
 
 async def process_graphs():
     for graph, original_data, sequence in tqdm(compiled):
@@ -176,18 +185,37 @@ async def process_graphs():
             # Create a compatible pulse for the backend
             register, compatible_pulse = prepare_for_qek_backend(graph, sequence)
             
-            # Run with the compatible objects
-            states = await executor.run(register=register, pulse=compatible_pulse)
-            
-            processed_dataset.append(ProcessedData.from_register(
-                register=graph.register,
-                pulse=compatible_pulse,
-                device=pl.MockDevice,
-                state_dict=states,
-                target=graph.target
-            ))
+            try:
+                # Run with the compatible objects
+                states = await executor.run(register=register, pulse=compatible_pulse)
+                
+                processed_dataset.append(ProcessedData.from_register(
+                    register=graph.register,
+                    pulse=compatible_pulse,
+                    device=pl.MockDevice,
+                    state_dict=states,
+                    target=graph.target
+                ))
+            except Exception as e:
+                if "Excess work done" in str(e):
+                    print(f"ODE solver error with graph {graph.id}, retrying with higher nsteps...")
+                    # Configure with even higher nsteps for this specific difficult case
+                    temp_executor = configure_backend_for_stability(QutipBackend(device=pl.MockDevice), nsteps=250000)
+                    states = await temp_executor.run(register=register, pulse=compatible_pulse)
+                    
+                    processed_dataset.append(ProcessedData.from_register(
+                        register=graph.register,
+                        pulse=compatible_pulse,
+                        device=pl.MockDevice,
+                        state_dict=states,
+                        target=graph.target
+                    ))
+                else:
+                    raise e
+                    
         except Exception as e:
             print(f"Error processing graph {graph.id}: {str(e)}")
+            # Continue with other graphs even if one fails
 
 import asyncio
 asyncio.run(process_graphs())

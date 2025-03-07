@@ -1,11 +1,21 @@
 import matplotlib.pyplot as plt
 import numpy as np
 
-def visualize_texture_pulse_effects(graph, pulse, original_data):
-    """Visualize how texture affects pulse parameters"""
+def visualize_texture_pulse_effects(graph, pulse_or_sequence, original_data):
+    """
+    Visualize how texture affects pulse parameters.
+    
+    Args:
+        graph: TextureAwareGraph object with register and texture metadata
+        pulse_or_sequence: Either a pulser Pulse object or a pulser Sequence object
+        original_data: Original graph data object
+        
+    Returns:
+        Matplotlib figure with visualizations
+    """
     if not hasattr(graph.register, 'metadata') or 'texture_features' not in graph.register.metadata:
         print("No texture information available in register")
-        return
+        return plt.figure(figsize=(8, 3))
     
     # Extract texture features
     texture_features = graph.register.metadata['texture_features']
@@ -15,41 +25,69 @@ def visualize_texture_pulse_effects(graph, pulse, original_data):
     atom_names = list(graph.register.qubits)
     texture_values = [texture_features.get(atom, 0) for atom in atom_names]
     
-    # Get pulse parameters (this depends on your pulse structure)
+    # Extract durations and amplitudes based on object type
     durations = []
     amplitudes = []
     
-    # For sequences with multiple channels - handle potential missing attributes
-    if hasattr(pulse, 'declared_channels'):
-        # In newer versions, use declared_channels
-        channel_names = pulse.declared_channels
+    # Case 1: Direct Pulse object
+    if hasattr(pulse_or_sequence, 'duration') and hasattr(pulse_or_sequence, 'amplitude'):
+        durations = [pulse_or_sequence.duration] * len(texture_values)
+        amplitudes = [pulse_or_sequence.amplitude] * len(texture_values)
+    
+    # Case 2: Sequence object with channels
+    elif hasattr(pulse_or_sequence, 'channels'):
+        channels = pulse_or_sequence.channels
         
-        # Assuming the channel_map contains mapping from target (atom name) to channel
-        if hasattr(pulse, 'channel_map') and pulse.channel_map:
-            for atom in atom_names:
-                # Try to find channel for this atom
-                for channel_name, channel in pulse.channel_map.items():
-                    if atom in channel.targets:
-                        if hasattr(channel, 'pulses') and channel.pulses:
-                            durations.append(channel.pulses[0].duration)
-                            amplitudes.append(channel.pulses[0].amplitude)
+        # Try to extract pulses from each channel
+        for channel_name, channel in channels.items():
+            if hasattr(channel, 'pulses') and channel.pulses:
+                # Found pulses in this channel
+                for i, atom in enumerate(atom_names):
+                    # Look for pulses targeting this atom
+                    matching_pulse = None
+                    if hasattr(channel, 'targets') and atom in channel.targets:
+                        matching_pulse = channel.pulses[0]  # Use first pulse as example
+                    
+                    if matching_pulse is not None:
+                        durations.append(getattr(matching_pulse, 'duration', 660))
+                        amplitudes.append(getattr(matching_pulse, 'amplitude', 2*np.pi))
+                
+                # If we found pulses in this channel, we're done
+                if durations:
+                    break
         
-        # If we couldn't get durations from the channel_map, use a different approach
-        if not durations and hasattr(pulse, 'channels'):
-            # Try direct access to channels
-            for atom in atom_names:
-                channel_name = f"raman_{atom}"
-                if channel_name in pulse.channels:
-                    channel = pulse.channels[channel_name]
-                    if hasattr(channel, 'pulses') and channel.pulses:
-                        durations.append(channel.pulses[0].duration)
-                        amplitudes.append(channel.pulses[0].amplitude)
+        # If still no durations, try a different approach for sequence
+        if not durations and hasattr(pulse_or_sequence, 'get_pulses'):
+            try:
+                # This extracts all pulses from the sequence as a dictionary
+                all_pulses = pulse_or_sequence.get_pulses()
+                if all_pulses:
+                    # Just use the first pulse we find as a reference
+                    first_pulse = list(all_pulses.values())[0]
+                    if hasattr(first_pulse, 'duration') and hasattr(first_pulse, 'amplitude'):
+                        durations = [first_pulse.duration] * len(texture_values)
+                        amplitudes = [first_pulse.amplitude] * len(texture_values)
+            except Exception as e:
+                print(f"Could not extract pulses using get_pulses(): {e}")
+    
+    # Case 3: Using our TextureAwareGraph's custom sequence creation
+    if not durations and hasattr(graph, 'base_duration') and hasattr(graph, 'base_amplitude'):
+        # Use the graph's base pulse parameters to estimate
+        base_duration = graph.base_duration
+        base_amplitude = graph.base_amplitude
+        
+        # Create pulse parameters that vary with texture value
+        durations = [int(base_duration * (0.5 + val)) for val in texture_values]
+        amplitudes = [base_amplitude * (0.8 + 0.4 * val) for val in texture_values]
     
     # If we still couldn't extract durations, use placeholder values
     if not durations:
-        print("Warning: Could not extract pulse parameters. Using placeholder values.")
-        durations = [660] * len(texture_values)  # Default duration
-        amplitudes = [2 * np.pi * (0.8 + 0.4 * val) for val in texture_values]  # Scaled by texture
+        print("Warning: Could not extract pulse parameters directly. Using TextureAwareGraph formula.")
+        # Use the formula from TextureAwareGraph.create_texture_sequence
+        base_duration = 660
+        base_amplitude = 2 * np.pi
+        durations = [int(base_duration * (0.5 + val)) for val in texture_values]
+        amplitudes = [base_amplitude * (0.8 + 0.4 * val) for val in texture_values]
     
     # Create visualization
     fig, (ax1, ax2, ax3) = plt.subplots(1, 3, figsize=(15, 5))

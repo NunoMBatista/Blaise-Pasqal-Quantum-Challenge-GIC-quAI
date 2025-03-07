@@ -109,3 +109,34 @@ def diagnose_sequence(sequence):
         diagnostics["error"] = str(e)
         
     return diagnostics
+
+
+def configure_backend_for_stability(backend, nsteps=50000):
+    """
+    Configure a QEK backend for improved numerical stability.
+    
+    Args:
+        backend: A QutipBackend or similar backend object
+        nsteps: Number of ODE solver steps to allow
+        
+    Returns:
+        The configured backend
+    """
+    # Check if the backend has solver_kwargs attribute
+    if hasattr(backend, 'solver_kwargs'):
+        # Update the solver parameters
+        backend.solver_kwargs.update({
+            'nsteps': nsteps,
+            'atol': 1e-10,
+            'rtol': 1e-10,
+            'method': 'bdf' if hasattr(backend, 'supports_bdf') and backend.supports_bdf else 'zvode'
+        })
+    
+    # Some backends might use options attribute instead
+    elif hasattr(backend, 'options'):
+        if isinstance(backend.options, dict):
+            backend.options['nsteps'] = nsteps
+            backend.options['atol'] = 1e-10
+            backend.options['rtol'] = 1e-10
+    
+    return backend
