@@ -1,0 +1,99 @@
+import numpy as np
+from sklearn.model_selection import train_test_split, cross_val_score
+from sklearn.svm import SVC
+from sklearn.metrics import f1_score, balanced_accuracy_score, confusion_matrix, classification_report
+from qek.kernel import QuantumEvolutionKernel as QEK
+
+def prepare_dataset(processed_dataset):
+    """Prepare dataset for model training"""
+    X = [data for data in processed_dataset]
+    y = [data.target for data in processed_dataset]
+
+    print("\nClass distribution in processed dataset:")
+    class_counts = {}
+    for data in processed_dataset:
+        label = data.target
+        class_counts[label] = class_counts.get(label, 0) + 1
+    print(f"No polyp (0): {class_counts.get(0, 0)}")
+    print(f"Polyp (1): {class_counts.get(1, 1)}")
+    
+    return X, y
+
+def split_dataset(X, y, test_size=0.2, random_state=42):
+    """Split dataset into training and testing sets"""
+    X_train, X_test, y_train, y_test = train_test_split(
+        X, y, stratify=y, test_size=test_size, random_state=random_state
+    )
+    
+    print(f"Size of the training set: {len(X_train)}")
+    print(f"Size of the testing set: {len(X_test)}")
+    print(f"Class distribution - Training: No polyp: {y_train.count(0)}, Polyp: {y_train.count(1)}")
+    print(f"Class distribution - Testing: No polyp: {y_test.count(0)}, Polyp: {y_test.count(1)}")
+    
+    return X_train, X_test, y_train, y_test
+
+def train_qek_svm_model(X_train, X_test, y_train, y_test, mu=0.5):
+    """Train SVM model with Quantum Evolution Kernel"""
+    # Initialize kernel
+    qek_kernel = QEK(mu=mu)
+    
+    # Create and train model
+    model = SVC(
+        kernel=qek_kernel, 
+        random_state=42,
+        class_weight='balanced'
+    )
+    model.fit(X_train, y_train)
+    
+    # Make predictions
+    y_pred = model.predict(X_test)
+    
+    # Evaluate model
+    evaluate_model(model, X_test, y_test, y_pred)
+    
+    return model, y_pred
+
+def evaluate_model(model, X_test, y_test, y_pred):
+    """Evaluate model performance with various metrics"""
+    print("\nModel Prediction Analysis:")
+    unique_predictions = np.unique(y_pred)
+    print(f"Unique predicted classes: {unique_predictions}")
+    print(f"Number of predictions for each class: {np.bincount(y_pred if isinstance(y_pred, np.ndarray) else np.array(y_pred, dtype=int))}")
+    print(f"True class distribution: {np.bincount(y_test if isinstance(y_test, np.ndarray) else np.array(y_test, dtype=int))}")
+
+    # Show prediction probabilities if available
+    if hasattr(model, 'predict_proba'):
+        try:
+            proba = model.predict_proba(X_test)
+            print("\nPrediction probabilities:")
+            print(f"Mean probability for class 0: {np.mean(proba[:, 0]):.4f}")
+            print(f"Mean probability for class 1: {np.mean(proba[:, 1]):.4f}")
+        except Exception as e:
+            print(f"Could not get prediction probabilities: {e}")
+
+    print("\nEvaluation Results:")
+    print(f"F1 Score: {f1_score(y_test, y_pred, average='weighted', zero_division=0)}")
+    print(f"Balanced Accuracy Score: {balanced_accuracy_score(y_test, y_pred)}")
+    print("\nConfusion Matrix:")
+    print(confusion_matrix(y_test, y_pred))
+    print("\nClassification Report:")
+    print(classification_report(y_test, y_pred, target_names=['No Polyp', 'Polyp'], zero_division=0))
+    
+    print("\n--- End of Model Analysis ---")
+
+def run_cross_validation(model, X, y, cv=5):
+    """Run cross-validation for more robust assessment"""
+    if len(X) >= 10:  # Only run if we have enough data
+        print("\nRunning cross-validation to get a more robust assessment:")
+        try:
+            cv_scores = cross_val_score(
+                model, 
+                X, y, 
+                cv=min(cv, len(np.unique(y))), 
+                scoring='balanced_accuracy'
+            )
+            print(f"Cross-validation balanced accuracy: {np.mean(cv_scores):.4f} ± {np.std(cv_scores):.4f}")
+            return cv_scores
+        except Exception as e:
+            print(f"Could not run cross-validation: {e}")
+    return None
