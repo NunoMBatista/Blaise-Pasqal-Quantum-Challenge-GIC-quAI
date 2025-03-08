@@ -81,13 +81,18 @@ class TextureAwareGraph(BaseGraph):
                 node_texture = texture_features.get(atom, default_texture)
                 
                 # Scale duration based on texture value
-                duration = int(self.base_duration * (0.5 + node_texture))
+                #duration = int(self.base_duration * (0.5 + node_texture))
+                duration = int(self.base_duration * (0.25 + 1.5 * node_texture))
+
                 # Round duration to a multiple of the device's clock period (4)
                 duration = 4 * round(duration / 4) 
+
+                # Also modify the amplitude to encode texture information
+                amplitude = self.base_amplitude * (0.5 + node_texture)
                 
                 # Create node-specific pulse with duration proportional to texture
                 pulse = Pulse.ConstantAmplitude(
-                    amplitude=self.base_amplitude,
+                    amplitude=amplitude,
                     detuning=RampWaveform(duration, 0, 0),
                     phase=0.0
                 )

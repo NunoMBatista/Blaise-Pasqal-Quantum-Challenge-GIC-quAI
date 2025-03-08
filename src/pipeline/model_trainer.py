@@ -22,7 +22,11 @@ def prepare_dataset(processed_dataset):
 def split_dataset(X, y, test_size=0.2, random_state=42):
     """Split dataset into training and testing sets"""
     X_train, X_test, y_train, y_test = train_test_split(
-        X, y, stratify=y, test_size=test_size, random_state=random_state
+        X, 
+        y, 
+        stratify=y, 
+        test_size=test_size, 
+        random_state=random_state
     )
     
     print(f"Size of the training set: {len(X_train)}")
@@ -32,7 +36,7 @@ def split_dataset(X, y, test_size=0.2, random_state=42):
     
     return X_train, X_test, y_train, y_test
 
-def train_qek_svm_model(X_train, X_test, y_train, y_test, mu=0.5):
+def train_qek_svm_model(X_train, X_test, y_train, y_test, mu=0.5, class_weight='balanced'):
     """Train SVM model with Quantum Evolution Kernel"""
     # Initialize kernel
     qek_kernel = QEK(mu=mu)
@@ -41,8 +45,9 @@ def train_qek_svm_model(X_train, X_test, y_train, y_test, mu=0.5):
     model = SVC(
         kernel=qek_kernel, 
         random_state=42,
-        class_weight='balanced'
+        class_weight=class_weight
     )
+    print("\nTraining SVM model with Quantum Evolution Kernel...")
     model.fit(X_train, y_train)
     
     # Make predictions
@@ -79,6 +84,8 @@ def evaluate_model(model, X_test, y_test, y_pred):
     print("\nClassification Report:")
     print(classification_report(y_test, y_pred, target_names=['No Polyp', 'Polyp'], zero_division=0))
     
+    analyze_predictions(model, X_test, y_test, y_pred)
+    
     print("\n--- End of Model Analysis ---")
 
 def run_cross_validation(model, X, y, cv=5):
@@ -97,3 +104,39 @@ def run_cross_validation(model, X, y, cv=5):
         except Exception as e:
             print(f"Could not run cross-validation: {e}")
     return None
+
+
+def analyze_predictions(model, X_test, y_test, y_pred):
+    """Analyze prediction errors in detail"""
+    print("\n=== DETAILED PREDICTION ANALYSIS ===")
+    
+    # Get indices of different prediction outcomes
+    true_pos = [i for i, (y, p) in enumerate(zip(y_test, y_pred)) if y == 1 and p == 1]
+    false_neg = [i for i, (y, p) in enumerate(zip(y_test, y_pred)) if y == 1 and p == 0]
+    false_pos = [i for i, (y, p) in enumerate(zip(y_test, y_pred)) if y == 0 and p == 1]
+    
+    print(f"Correctly detected polyps: {len(true_pos)} of {y_test.count(1)}")
+    print(f"Missed polyps: {len(false_neg)} of {y_test.count(1)}")
+    print(f"False alarms: {len(false_pos)} of {len(y_test) - y_test.count(1)}")
+    
+    # If probability estimates are available, analyze confidence
+    if hasattr(model, 'predict_proba'):
+        try:
+            proba = model.predict_proba(X_test)
+            
+            # Calculate average confidence for each category
+            if true_pos:
+                avg_conf_tp = np.mean([proba[i][1] for i in true_pos])
+                print(f"Avg. confidence for correctly detected polyps: {avg_conf_tp:.3f}")
+            
+            if false_neg:
+                avg_conf_fn = np.mean([proba[i][0] for i in false_neg])
+                print(f"Avg. confidence for missed polyps: {avg_conf_fn:.3f}")
+                
+            if false_pos:
+                avg_conf_fp = np.mean([proba[i][1] for i in false_pos])
+                print(f"Avg. confidence for false alarms: {avg_conf_fp:.3f}")
+        except:
+            pass
+    
+    print("=== END ANALYSIS ===\n")

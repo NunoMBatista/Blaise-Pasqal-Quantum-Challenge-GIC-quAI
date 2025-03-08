@@ -24,7 +24,8 @@ def main():
         POLYP_DIR,
         MAX_SAMPLES,
         N_QUBITS,
-        use_superpixels=True
+        use_superpixels=True,
+        compactness=SLIC_COMPACTNESS
     )
     
     # 2. Prepare graphs for compilation
@@ -45,7 +46,10 @@ def main():
     
     # 4. Visualize example (optional)
     if compiled_graphs and VISUALIZE_EXAMPLES:
-        visualize_example(compiled_graphs, example_index=2)
+        visualize_example(
+            compiled_graphs,
+            example_index=2
+        )
     
     # 5. Execute quantum simulation
     processed_dataset = run_quantum_execution(
@@ -64,10 +68,21 @@ def main():
     X_train, X_test, y_train, y_test = split_dataset(X, y)
     
     # 8. Train and evaluate model
-    model, y_pred = train_qek_svm_model(X_train, X_test, y_train, y_test, mu=0.5)
+    model, y_pred = train_qek_svm_model(
+        X_train,
+        X_test,
+        y_train,
+        y_test,
+        mu=MU_HYPERPARAMETER,
+        class_weight=CLASS_WEIGHTS
+    )
     
     # 9. Run cross-validation (optional)
-    run_cross_validation(model, X, y)
+    run_cross_validation(
+        model, 
+        X, 
+        y
+    )
     
     return model, processed_dataset
 
@@ -82,3 +97,6 @@ if __name__ == "__main__":
     print(f"ODE nsteps: {ODE_NSTEPS}")
     print(f"ODE nsteps high: {ODE_NSTEPS_HIGH}")
     print(f"Texture feature: {TEXTURE_FEATURE}")
+    print(f"μ hyperparameter: {MU_HYPERPARAMETER}")
+    print(f"Class weights: {CLASS_WEIGHTS}")
+    print(f"Compactness: {SLIC_COMPACTNESS}")

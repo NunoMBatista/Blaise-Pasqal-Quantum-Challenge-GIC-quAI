@@ -6,7 +6,7 @@ from utils.compatibility_utils import make_compatible_with_device
 from graphs.texture_aware_graph import TextureAwareGraph
 import pulser as pl
 
-def load_datasets(no_polyp_dir, polyp_dir, max_samples, n_qubits, use_superpixels=True):
+def load_datasets(no_polyp_dir, polyp_dir, max_samples, n_qubits, use_superpixels=True, compactness=10):
     """Load and combine polyp and non-polyp datasets"""
     
     # Create datasets for each class (with labels)
@@ -15,7 +15,8 @@ def load_datasets(no_polyp_dir, polyp_dir, max_samples, n_qubits, use_superpixel
         max_samples=max_samples,
         n_segments=n_qubits,
         use_superpixels=use_superpixels,
-        label=0  # Label 0 for no polyp
+        label=0,  # Label 0 for no polyp
+        compactness=compactness
     )
 
     polyp_dataset = ImageGraphDataset(
@@ -23,7 +24,8 @@ def load_datasets(no_polyp_dir, polyp_dir, max_samples, n_qubits, use_superpixel
         max_samples=max_samples,
         n_segments=n_qubits,
         use_superpixels=use_superpixels,
-        label=1  # Label 1 for polyp
+        label=1,  # Label 1 for polyp
+        compactness=compactness
     )
 
     # Combine datasets

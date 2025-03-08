@@ -13,7 +13,7 @@ import numpy as np
 
 class ImageGraphDataset(Dataset):
     def __init__(self, img_dir, transform=None, pre_transform=None, max_samples=100, 
-                 n_segments=20, use_superpixels=True, label=None):
+                 n_segments=20, use_superpixels=True, label=None, compactness=10):
         """
         behaviour:
             Creates a dataset of graphs from images.
@@ -33,6 +33,7 @@ class ImageGraphDataset(Dataset):
         self.n_segments = n_segments
         self.use_superpixels = use_superpixels
         self.label = label
+        self.compactness = compactness
         
         # Find all image files in the directory
         img_extensions = ['*.jpg', '*.jpeg', '*.png', '*.bmp']
@@ -54,7 +55,7 @@ class ImageGraphDataset(Dataset):
                 
                 # Convert to graph
                 if self.use_superpixels:
-                    graph = superpixel_to_graph(img, n_segments=n_segments)
+                    graph = superpixel_to_graph(img, n_segments=n_segments, compactness=compactness)
                 else:
                     # For pixel graphs, use a small patch to keep graph size reasonable
                     small_img = load_image(path, size=(16, 16))  # Smaller for pixel graphs

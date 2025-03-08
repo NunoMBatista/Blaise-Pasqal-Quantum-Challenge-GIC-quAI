@@ -1,0 +1,173 @@
+[2025-03-08 19:56:37] Starting parameter optimization with 2160 combinations
+[2025-03-08 19:56:37] Parameter space: {'N_QUBITS': [10, 15, 20], 'REGISTER_DIM': [20, 30, 40], 'TEXTURE_FEATURE': ['pca', 'energy', 'homogeneity', 'contrast'], 'MU_HYPERPARAMETER': [0.5, 0.8, 1.0, 1.2, 1.5], 'SLIC_COMPACTNESS': [5, 10, 15], 'CLASS_WEIGHTS': ['balanced', {0: 1.0, 1: 1.5}, {0: 1.0, 1: 2.0}, {0: 1.0, 1: 3.0}], 'MAX_SAMPLES': [200]}
+[2025-03-08 19:56:37] 
+--- Run 1/2160 ---
+[2025-03-08 19:56:37] Testing parameters: {'N_QUBITS': 10, 'REGISTER_DIM': 20, 'TEXTURE_FEATURE': 'pca', 'MU_HYPERPARAMETER': 0.5, 'SLIC_COMPACTNESS': 5, 'CLASS_WEIGHTS': 'balanced', 'MAX_SAMPLES': 200}
+[2025-03-08 19:57:46] Results: Balanced Accuracy = 0.5125, F1 = 0.4764
+[2025-03-08 19:57:46] Runtime: 69.8 seconds
+[2025-03-08 19:57:46] New best parameters found!
+[2025-03-08 19:57:46] 
+--- Run 2/2160 ---
+[2025-03-08 19:57:46] Testing parameters: {'N_QUBITS': 10, 'REGISTER_DIM': 20, 'TEXTURE_FEATURE': 'pca', 'MU_HYPERPARAMETER': 0.5, 'SLIC_COMPACTNESS': 5, 'CLASS_WEIGHTS': {0: 1.0, 1: 1.5}, 'MAX_SAMPLES': 200}
+[2025-03-08 19:58:56] Results: Balanced Accuracy = 0.5000, F1 = 0.3333
+[2025-03-08 19:58:56] Runtime: 70.0 seconds
+[2025-03-08 19:58:56] 
+--- Run 3/2160 ---
+[2025-03-08 19:58:56] Testing parameters: {'N_QUBITS': 10, 'REGISTER_DIM': 20, 'TEXTURE_FEATURE': 'pca', 'MU_HYPERPARAMETER': 0.5, 'SLIC_COMPACTNESS': 5, 'CLASS_WEIGHTS': {0: 1.0, 1: 2.0}, 'MAX_SAMPLES': 200}
+[2025-03-08 20:00:06] Results: Balanced Accuracy = 0.5000, F1 = 0.3333
+[2025-03-08 20:00:06] Runtime: 69.2 seconds
+[2025-03-08 20:00:06] 
+--- Run 4/2160 ---
+[2025-03-08 20:00:06] Testing parameters: {'N_QUBITS': 10, 'REGISTER_DIM': 20, 'TEXTURE_FEATURE': 'pca', 'MU_HYPERPARAMETER': 0.5, 'SLIC_COMPACTNESS': 5, 'CLASS_WEIGHTS': {0: 1.0, 1: 3.0}, 'MAX_SAMPLES': 200}
+[2025-03-08 20:01:16] Results: Balanced Accuracy = 0.5000, F1 = 0.3333
+[2025-03-08 20:01:16] Runtime: 70.7 seconds
+[2025-03-08 20:01:16] 
+--- Run 5/2160 ---
+[2025-03-08 20:01:16] Testing parameters: {'N_QUBITS': 10, 'REGISTER_DIM': 20, 'TEXTURE_FEATURE': 'pca', 'MU_HYPERPARAMETER': 0.5, 'SLIC_COMPACTNESS': 10, 'CLASS_WEIGHTS': 'balanced', 'MAX_SAMPLES': 200}
+[2025-03-08 20:03:07] Results: Balanced Accuracy = 0.5625, F1 = 0.5152
+[2025-03-08 20:03:07] Runtime: 111.0 seconds
+[2025-03-08 20:03:07] New best parameters found!
+[2025-03-08 20:03:07] 
+--- Run 6/2160 ---
+[2025-03-08 20:03:07] Testing parameters: {'N_QUBITS': 10, 'REGISTER_DIM': 20, 'TEXTURE_FEATURE': 'pca', 'MU_HYPERPARAMETER': 0.5, 'SLIC_COMPACTNESS': 10, 'CLASS_WEIGHTS': {0: 1.0, 1: 1.5}, 'MAX_SAMPLES': 200}
+[2025-03-08 20:04:55] Results: Balanced Accuracy = 0.5000, F1 = 0.3333
+[2025-03-08 20:04:55] Runtime: 108.2 seconds
+[2025-03-08 20:04:55] 
+--- Run 7/2160 ---
+[2025-03-08 20:04:55] Testing parameters: {'N_QUBITS': 10, 'REGISTER_DIM': 20, 'TEXTURE_FEATURE': 'pca', 'MU_HYPERPARAMETER': 0.5, 'SLIC_COMPACTNESS': 10, 'CLASS_WEIGHTS': {0: 1.0, 1: 2.0}, 'MAX_SAMPLES': 200}
+[2025-03-08 20:06:45] Results: Balanced Accuracy = 0.5000, F1 = 0.3333
+[2025-03-08 20:06:45] Runtime: 109.1 seconds
+[2025-03-08 20:06:45] 
+--- Run 8/2160 ---
+[2025-03-08 20:06:45] Testing parameters: {'N_QUBITS': 10, 'REGISTER_DIM': 20, 'TEXTURE_FEATURE': 'pca', 'MU_HYPERPARAMETER': 0.5, 'SLIC_COMPACTNESS': 10, 'CLASS_WEIGHTS': {0: 1.0, 1: 3.0}, 'MAX_SAMPLES': 200}
+[2025-03-08 20:08:33] Results: Balanced Accuracy = 0.5000, F1 = 0.3333
+[2025-03-08 20:08:33] Runtime: 108.6 seconds
+[2025-03-08 20:08:33] 
+--- Run 9/2160 ---
+[2025-03-08 20:08:33] Testing parameters: {'N_QUBITS': 10, 'REGISTER_DIM': 20, 'TEXTURE_FEATURE': 'pca', 'MU_HYPERPARAMETER': 0.5, 'SLIC_COMPACTNESS': 15, 'CLASS_WEIGHTS': 'balanced', 'MAX_SAMPLES': 200}
+[2025-03-08 20:10:20] Results: Balanced Accuracy = 0.6125, F1 = 0.6075
+[2025-03-08 20:10:20] Runtime: 107.2 seconds
+[2025-03-08 20:10:20] New best parameters found!
+[2025-03-08 20:10:20] 
+--- Run 10/2160 ---
+[2025-03-08 20:10:20] Testing parameters: {'N_QUBITS': 10, 'REGISTER_DIM': 20, 'TEXTURE_FEATURE': 'pca', 'MU_HYPERPARAMETER': 0.5, 'SLIC_COMPACTNESS': 15, 'CLASS_WEIGHTS': {0: 1.0, 1: 1.5}, 'MAX_SAMPLES': 200}
+[2025-03-08 20:12:05] Results: Balanced Accuracy = 0.5000, F1 = 0.3333
+[2025-03-08 20:12:05] Runtime: 104.5 seconds
+[2025-03-08 20:12:05] 
+--- Run 11/2160 ---
+[2025-03-08 20:12:05] Testing parameters: {'N_QUBITS': 10, 'REGISTER_DIM': 20, 'TEXTURE_FEATURE': 'pca', 'MU_HYPERPARAMETER': 0.5, 'SLIC_COMPACTNESS': 15, 'CLASS_WEIGHTS': {0: 1.0, 1: 2.0}, 'MAX_SAMPLES': 200}
+[2025-03-08 20:13:51] Results: Balanced Accuracy = 0.5000, F1 = 0.3333
+[2025-03-08 20:13:51] Runtime: 105.7 seconds
+[2025-03-08 20:13:51] 
+--- Run 12/2160 ---
+[2025-03-08 20:13:51] Testing parameters: {'N_QUBITS': 10, 'REGISTER_DIM': 20, 'TEXTURE_FEATURE': 'pca', 'MU_HYPERPARAMETER': 0.5, 'SLIC_COMPACTNESS': 15, 'CLASS_WEIGHTS': {0: 1.0, 1: 3.0}, 'MAX_SAMPLES': 200}
+[2025-03-08 20:15:38] Results: Balanced Accuracy = 0.5000, F1 = 0.3333
+[2025-03-08 20:15:38] Runtime: 107.7 seconds
+[2025-03-08 20:15:38] 
+--- Run 13/2160 ---
+[2025-03-08 20:15:38] Testing parameters: {'N_QUBITS': 10, 'REGISTER_DIM': 20, 'TEXTURE_FEATURE': 'pca', 'MU_HYPERPARAMETER': 0.8, 'SLIC_COMPACTNESS': 5, 'CLASS_WEIGHTS': 'balanced', 'MAX_SAMPLES': 200}
+[2025-03-08 20:16:45] Results: Balanced Accuracy = 0.5250, F1 = 0.4861
+[2025-03-08 20:16:45] Runtime: 67.0 seconds
+[2025-03-08 20:16:45] 
+--- Run 14/2160 ---
+[2025-03-08 20:16:45] Testing parameters: {'N_QUBITS': 10, 'REGISTER_DIM': 20, 'TEXTURE_FEATURE': 'pca', 'MU_HYPERPARAMETER': 0.8, 'SLIC_COMPACTNESS': 5, 'CLASS_WEIGHTS': {0: 1.0, 1: 1.5}, 'MAX_SAMPLES': 200}
+[2025-03-08 20:17:53] Results: Balanced Accuracy = 0.5000, F1 = 0.3333
+[2025-03-08 20:17:53] Runtime: 67.6 seconds
+[2025-03-08 20:17:53] 
+--- Run 15/2160 ---
+[2025-03-08 20:17:53] Testing parameters: {'N_QUBITS': 10, 'REGISTER_DIM': 20, 'TEXTURE_FEATURE': 'pca', 'MU_HYPERPARAMETER': 0.8, 'SLIC_COMPACTNESS': 5, 'CLASS_WEIGHTS': {0: 1.0, 1: 2.0}, 'MAX_SAMPLES': 200}
+[2025-03-08 20:19:01] Results: Balanced Accuracy = 0.5000, F1 = 0.3333
+[2025-03-08 20:19:01] Runtime: 67.8 seconds
+[2025-03-08 20:19:01] 
+--- Run 16/2160 ---
+[2025-03-08 20:19:01] Testing parameters: {'N_QUBITS': 10, 'REGISTER_DIM': 20, 'TEXTURE_FEATURE': 'pca', 'MU_HYPERPARAMETER': 0.8, 'SLIC_COMPACTNESS': 5, 'CLASS_WEIGHTS': {0: 1.0, 1: 3.0}, 'MAX_SAMPLES': 200}
+[2025-03-08 20:20:08] Results: Balanced Accuracy = 0.5000, F1 = 0.3333
+[2025-03-08 20:20:08] Runtime: 67.1 seconds
+[2025-03-08 20:20:08] 
+--- Run 17/2160 ---
+[2025-03-08 20:20:08] Testing parameters: {'N_QUBITS': 10, 'REGISTER_DIM': 20, 'TEXTURE_FEATURE': 'pca', 'MU_HYPERPARAMETER': 0.8, 'SLIC_COMPACTNESS': 10, 'CLASS_WEIGHTS': 'balanced', 'MAX_SAMPLES': 200}
+[2025-03-08 20:21:56] Results: Balanced Accuracy = 0.6125, F1 = 0.5893
+[2025-03-08 20:21:56] Runtime: 108.7 seconds
+[2025-03-08 20:21:56] 
+--- Run 18/2160 ---
+[2025-03-08 20:21:56] Testing parameters: {'N_QUBITS': 10, 'REGISTER_DIM': 20, 'TEXTURE_FEATURE': 'pca', 'MU_HYPERPARAMETER': 0.8, 'SLIC_COMPACTNESS': 10, 'CLASS_WEIGHTS': {0: 1.0, 1: 1.5}, 'MAX_SAMPLES': 200}
+[2025-03-08 20:23:43] Results: Balanced Accuracy = 0.5000, F1 = 0.3333
+[2025-03-08 20:23:43] Runtime: 107.0 seconds
+[2025-03-08 20:23:43] 
+--- Run 19/2160 ---
+[2025-03-08 20:23:43] Testing parameters: {'N_QUBITS': 10, 'REGISTER_DIM': 20, 'TEXTURE_FEATURE': 'pca', 'MU_HYPERPARAMETER': 0.8, 'SLIC_COMPACTNESS': 10, 'CLASS_WEIGHTS': {0: 1.0, 1: 2.0}, 'MAX_SAMPLES': 200}
+[2025-03-08 20:25:32] Results: Balanced Accuracy = 0.5000, F1 = 0.3333
+[2025-03-08 20:25:32] Runtime: 108.1 seconds
+[2025-03-08 20:25:32] 
+--- Run 20/2160 ---
+[2025-03-08 20:25:32] Testing parameters: {'N_QUBITS': 10, 'REGISTER_DIM': 20, 'TEXTURE_FEATURE': 'pca', 'MU_HYPERPARAMETER': 0.8, 'SLIC_COMPACTNESS': 10, 'CLASS_WEIGHTS': {0: 1.0, 1: 3.0}, 'MAX_SAMPLES': 200}
+[2025-03-08 20:27:19] Results: Balanced Accuracy = 0.5000, F1 = 0.3333
+[2025-03-08 20:27:19] Runtime: 107.4 seconds
+[2025-03-08 20:27:19] 
+--- Run 21/2160 ---
+[2025-03-08 20:27:19] Testing parameters: {'N_QUBITS': 10, 'REGISTER_DIM': 20, 'TEXTURE_FEATURE': 'pca', 'MU_HYPERPARAMETER': 0.8, 'SLIC_COMPACTNESS': 15, 'CLASS_WEIGHTS': 'balanced', 'MAX_SAMPLES': 200}
+[2025-03-08 20:29:05] Results: Balanced Accuracy = 0.6000, F1 = 0.5960
+[2025-03-08 20:29:05] Runtime: 106.3 seconds
+[2025-03-08 20:29:05] 
+--- Run 22/2160 ---
+[2025-03-08 20:29:05] Testing parameters: {'N_QUBITS': 10, 'REGISTER_DIM': 20, 'TEXTURE_FEATURE': 'pca', 'MU_HYPERPARAMETER': 0.8, 'SLIC_COMPACTNESS': 15, 'CLASS_WEIGHTS': {0: 1.0, 1: 1.5}, 'MAX_SAMPLES': 200}
+[2025-03-08 20:30:51] Results: Balanced Accuracy = 0.5000, F1 = 0.3333
+[2025-03-08 20:30:51] Runtime: 105.7 seconds
+[2025-03-08 20:30:51] 
+--- Run 23/2160 ---
+[2025-03-08 20:30:51] Testing parameters: {'N_QUBITS': 10, 'REGISTER_DIM': 20, 'TEXTURE_FEATURE': 'pca', 'MU_HYPERPARAMETER': 0.8, 'SLIC_COMPACTNESS': 15, 'CLASS_WEIGHTS': {0: 1.0, 1: 2.0}, 'MAX_SAMPLES': 200}
+[2025-03-08 20:32:37] Results: Balanced Accuracy = 0.5000, F1 = 0.3333
+[2025-03-08 20:32:37] Runtime: 106.0 seconds
+[2025-03-08 20:32:37] 
+--- Run 24/2160 ---
+[2025-03-08 20:32:37] Testing parameters: {'N_QUBITS': 10, 'REGISTER_DIM': 20, 'TEXTURE_FEATURE': 'pca', 'MU_HYPERPARAMETER': 0.8, 'SLIC_COMPACTNESS': 15, 'CLASS_WEIGHTS': {0: 1.0, 1: 3.0}, 'MAX_SAMPLES': 200}
+[2025-03-08 20:34:23] Results: Balanced Accuracy = 0.5000, F1 = 0.3333
+[2025-03-08 20:34:23] Runtime: 106.3 seconds
+[2025-03-08 20:34:23] 
+--- Run 25/2160 ---
+[2025-03-08 20:34:23] Testing parameters: {'N_QUBITS': 10, 'REGISTER_DIM': 20, 'TEXTURE_FEATURE': 'pca', 'MU_HYPERPARAMETER': 1.0, 'SLIC_COMPACTNESS': 5, 'CLASS_WEIGHTS': 'balanced', 'MAX_SAMPLES': 200}
+[2025-03-08 20:35:30] Results: Balanced Accuracy = 0.5250, F1 = 0.4933
+[2025-03-08 20:35:30] Runtime: 66.9 seconds
+[2025-03-08 20:35:30] 
+--- Run 26/2160 ---
+[2025-03-08 20:35:30] Testing parameters: {'N_QUBITS': 10, 'REGISTER_DIM': 20, 'TEXTURE_FEATURE': 'pca', 'MU_HYPERPARAMETER': 1.0, 'SLIC_COMPACTNESS': 5, 'CLASS_WEIGHTS': {0: 1.0, 1: 1.5}, 'MAX_SAMPLES': 200}
+[2025-03-08 20:36:39] Results: Balanced Accuracy = 0.5000, F1 = 0.3333
+[2025-03-08 20:36:39] Runtime: 68.7 seconds
+[2025-03-08 20:36:39] 
+--- Run 27/2160 ---
+[2025-03-08 20:36:39] Testing parameters: {'N_QUBITS': 10, 'REGISTER_DIM': 20, 'TEXTURE_FEATURE': 'pca', 'MU_HYPERPARAMETER': 1.0, 'SLIC_COMPACTNESS': 5, 'CLASS_WEIGHTS': {0: 1.0, 1: 2.0}, 'MAX_SAMPLES': 200}
+[2025-03-08 20:37:47] Results: Balanced Accuracy = 0.5000, F1 = 0.3333
+[2025-03-08 20:37:47] Runtime: 67.8 seconds
+[2025-03-08 20:37:47] 
+--- Run 28/2160 ---
+[2025-03-08 20:37:47] Testing parameters: {'N_QUBITS': 10, 'REGISTER_DIM': 20, 'TEXTURE_FEATURE': 'pca', 'MU_HYPERPARAMETER': 1.0, 'SLIC_COMPACTNESS': 5, 'CLASS_WEIGHTS': {0: 1.0, 1: 3.0}, 'MAX_SAMPLES': 200}
+[2025-03-08 20:38:55] Results: Balanced Accuracy = 0.5000, F1 = 0.3333
+[2025-03-08 20:38:55] Runtime: 68.5 seconds
+[2025-03-08 20:38:55] 
+--- Run 29/2160 ---
+[2025-03-08 20:38:55] Testing parameters: {'N_QUBITS': 10, 'REGISTER_DIM': 20, 'TEXTURE_FEATURE': 'pca', 'MU_HYPERPARAMETER': 1.0, 'SLIC_COMPACTNESS': 10, 'CLASS_WEIGHTS': 'balanced', 'MAX_SAMPLES': 200}
+[2025-03-08 20:40:44] Results: Balanced Accuracy = 0.5625, F1 = 0.5231
+[2025-03-08 20:40:44] Runtime: 108.5 seconds
+[2025-03-08 20:40:44] 
+--- Run 30/2160 ---
+[2025-03-08 20:40:44] Testing parameters: {'N_QUBITS': 10, 'REGISTER_DIM': 20, 'TEXTURE_FEATURE': 'pca', 'MU_HYPERPARAMETER': 1.0, 'SLIC_COMPACTNESS': 10, 'CLASS_WEIGHTS': {0: 1.0, 1: 1.5}, 'MAX_SAMPLES': 200}
+[2025-03-08 20:42:32] Results: Balanced Accuracy = 0.5000, F1 = 0.3333
+[2025-03-08 20:42:32] Runtime: 108.2 seconds
+[2025-03-08 20:42:32] 
+--- Run 31/2160 ---
+[2025-03-08 20:42:32] Testing parameters: {'N_QUBITS': 10, 'REGISTER_DIM': 20, 'TEXTURE_FEATURE': 'pca', 'MU_HYPERPARAMETER': 1.0, 'SLIC_COMPACTNESS': 10, 'CLASS_WEIGHTS': {0: 1.0, 1: 2.0}, 'MAX_SAMPLES': 200}
+[2025-03-08 20:44:20] Results: Balanced Accuracy = 0.5000, F1 = 0.3333
+[2025-03-08 20:44:20] Runtime: 108.4 seconds
+[2025-03-08 20:44:20] 
+--- Run 32/2160 ---
+[2025-03-08 20:44:20] Testing parameters: {'N_QUBITS': 10, 'REGISTER_DIM': 20, 'TEXTURE_FEATURE': 'pca', 'MU_HYPERPARAMETER': 1.0, 'SLIC_COMPACTNESS': 10, 'CLASS_WEIGHTS': {0: 1.0, 1: 3.0}, 'MAX_SAMPLES': 200}
+[2025-03-08 20:46:09] Results: Balanced Accuracy = 0.5000, F1 = 0.3333
+[2025-03-08 20:46:09] Runtime: 108.4 seconds
+[2025-03-08 20:46:09] 
+--- Run 33/2160 ---
+[2025-03-08 20:46:09] Testing parameters: {'N_QUBITS': 10, 'REGISTER_DIM': 20, 'TEXTURE_FEATURE': 'pca', 'MU_HYPERPARAMETER': 1.0, 'SLIC_COMPACTNESS': 15, 'CLASS_WEIGHTS': 'balanced', 'MAX_SAMPLES': 200}
+[2025-03-08 20:47:56] Results: Balanced Accuracy = 0.6125, F1 = 0.6075
+[2025-03-08 20:47:56] Runtime: 107.0 seconds
+[2025-03-08 20:47:56] 
+--- Run 34/2160 ---
+[2025-03-08 20:47:56] Testing parameters: {'N_QUBITS': 10, 'REGISTER_DIM': 20, 'TEXTURE_FEATURE': 'pca', 'MU_HYPERPARAMETER': 1.0, 'SLIC_COMPACTNESS': 15, 'CLASS_WEIGHTS': {0: 1.0, 1: 1.5}, 'MAX_SAMPLES': 200}
