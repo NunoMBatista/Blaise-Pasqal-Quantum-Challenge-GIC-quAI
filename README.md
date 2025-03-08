@@ -98,14 +98,13 @@ The dataset is stored in **NumPy (.npy) format** and labeled with a CSV file (`l
 
 ```plaintext
 📂 GIC-quAI
+ ├── 📂 code               # Synthetic datasets
  ├── 📂 data               # Synthetic datasets
- │   ├── images/          # Image files (JPG & NPY format)
- │   ├── labels.csv       # Labels for classification
- ├── 📂 models             # Quantum and classical models
- │   ├── qadence_qnn.py   # QNN implementation
- │   ├── pulser_graph_ml.py # Pulser-based graph ML
- ├── 📂 notebooks          # Jupyter notebooks for experiments
- ├── 📂 utils              # Helper functions and preprocessing tools
+ ├── 📂 docs               # Synthetic datasets
+ ├── 📂 results            # Synthetic datasets
+ ├── 📂 test               # Synthetic datasets
+ ├── .gitignore            # Ignored Files
+ ├── requirements.txt      # Required packages 
  ├── README.md             # Project documentation
 ```
 
