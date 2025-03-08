@@ -18,7 +18,7 @@ class ODESolverOptions:
         max_retries (int): Maximum number of retries with increased nsteps on failure
         retry_factor (float): Factor to multiply nsteps by on each retry
     """
-    nsteps: int = 10000
+    nsteps: int = 200000
     method: str = 'zvode'
     max_retries: int = 3
     retry_factor: float = 5.0

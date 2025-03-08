@@ -29,6 +29,11 @@ def visualize_texture_pulse_effects(graph, pulse_or_sequence, original_data):
     durations = []
     amplitudes = []
     
+    # Track if Rydberg pulse is present
+    has_rydberg_pulse = False
+    rydberg_amplitude = None
+    rydberg_duration = None
+    
     # Case 1: Direct Pulse object
     if hasattr(pulse_or_sequence, 'duration') and hasattr(pulse_or_sequence, 'amplitude'):
         durations = [pulse_or_sequence.duration] * len(texture_values)
@@ -41,7 +46,16 @@ def visualize_texture_pulse_effects(graph, pulse_or_sequence, original_data):
         # Try to extract pulses from each channel
         for channel_name, channel in channels.items():
             if hasattr(channel, 'pulses') and channel.pulses:
-                # Found pulses in this channel
+                # Check if this is a Rydberg channel
+                if 'rydberg' in channel_name.lower():
+                    has_rydberg_pulse = True
+                    if channel.pulses:
+                        first_pulse = channel.pulses[0]
+                        rydberg_amplitude = getattr(first_pulse, 'amplitude', 0)
+                        rydberg_duration = getattr(first_pulse, 'duration', 0)
+                    continue
+                
+                # Found pulses in regular channel
                 for i, atom in enumerate(atom_names):
                     # Look for pulses targeting this atom
                     matching_pulse = None
@@ -90,7 +104,12 @@ def visualize_texture_pulse_effects(graph, pulse_or_sequence, original_data):
         amplitudes = [base_amplitude * (0.8 + 0.4 * val) for val in texture_values]
     
     # Create visualization
-    fig, (ax1, ax2, ax3) = plt.subplots(1, 3, figsize=(15, 5))
+    if has_rydberg_pulse:
+        # If we have Rydberg pulse, create 4 subplots
+        fig, ((ax1, ax2), (ax3, ax4)) = plt.subplots(2, 2, figsize=(15, 10))
+    else:
+        # Original 3 subplots if no Rydberg pulse
+        fig, (ax1, ax2, ax3) = plt.subplots(1, 3, figsize=(15, 5))
     
     # Plot texture distribution
     ax1.hist(texture_values, bins=10)
@@ -116,6 +135,16 @@ def visualize_texture_pulse_effects(graph, pulse_or_sequence, original_data):
                 horizontalalignment='center', verticalalignment='center')
         ax3.text(0.5, 0.5, 'No pulse parameter data available', 
                 horizontalalignment='center', verticalalignment='center')
+    
+    # Add Rydberg pulse information if available
+    if has_rydberg_pulse:
+        ax4.axis('off')  # No plot needed, just text
+        info_text = "Rydberg Global Pulse:\n"
+        info_text += f"Amplitude: {rydberg_amplitude:.2f} rad/μs\n"
+        info_text += f"Duration: {rydberg_duration} ns\n"
+        ax4.text(0.1, 0.5, info_text, fontsize=14, 
+                 horizontalalignment='left', verticalalignment='center')
+        ax4.set_title('Rydberg Pulse Parameters')
     
     plt.tight_layout()
     return fig

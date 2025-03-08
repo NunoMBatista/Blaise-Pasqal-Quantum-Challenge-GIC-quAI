@@ -1,7 +1,7 @@
 import numpy as np
 import pulser
 from pulser import Register
-from pulser.devices import MockDevice
+from pulser.devices import DigitalAnalogDevice
 from torch_geometric.data import Data
 import matplotlib.pyplot as plt
 import torch
@@ -16,14 +16,14 @@ from sklearn.preprocessing import StandardScaler
         convert a pytorch geometric graph to a pulser quantum register with texture attributes
     input: 
         graph_data - a torch_geometric.data.data object representing a graph
-        device - pulser device (default: MockDevice)
+        device - pulser device (default: DigitalAnalogDevice)
         scale_factor - factor to scale graph positions
         min_distance - minimal distance between atoms
         texture_feature - which texture feature to use ("lbp", "contrast", "homogeneity", "energy")
     output: 
         a pulser register with atoms positioned according to graph nodes and texture metadata
 """
-def create_register_from_graph(graph_data, device=MockDevice, scale_factor=5.0, min_distance=4.0, texture_feature="pca"):
+def create_register_from_graph(graph_data, device=DigitalAnalogDevice, scale_factor=5.0, min_distance=4.0, texture_feature="pca"):
     # Extract node positions from the graph
     if not hasattr(graph_data, 'pos') or graph_data.pos is None:
         raise ValueError("Graph data must have position information (pos attribute)")
@@ -140,7 +140,7 @@ def create_register_from_graph(graph_data, device=MockDevice, scale_factor=5.0, 
     if not atom_positions:
         raise ValueError("No valid atom positions found. Try adjusting scale_factor.")
     
-    print(f"Creating register with {len(atom_positions)} atoms (max allowed: {max_atoms})")
+    #   print(f"Creating register with {len(atom_positions)} atoms (max allowed: {max_atoms})")
     register = Register(atom_positions)
     
     # Attach texture features as metadata
@@ -165,7 +165,7 @@ def create_register_from_graph(graph_data, device=MockDevice, scale_factor=5.0, 
     output: 
         a pulser register object
 """
-def graph_to_quantum_register(graph_data, scale_factor=5.0, device=MockDevice, texture_feature="pca", register_dim=None, verbose=False):
+def graph_to_quantum_register(graph_data, scale_factor=5.0, device=DigitalAnalogDevice, texture_feature="pca", register_dim=None, verbose=False):
     # Get device constraints
     max_radius = getattr(device, 'max_distance_from_center', 35.0)
     
@@ -240,7 +240,7 @@ def visualize_register_with_connections(register, graph_data=None, title="atom r
     atom_to_idx = {atom: i for i, atom in enumerate(register.qubits)}
     
     # Draw the register
-    register.draw(custom_ax=ax, blockade_radius=MockDevice.min_atom_distance, show=False)
+    register.draw(custom_ax=ax, blockade_radius=DigitalAnalogDevice.min_atom_distance, show=False)
     
     # Add connections between atoms based on graph edge_index if available
     if graph_data is not None and hasattr(graph_data, 'edge_index') and graph_data.edge_index.size(1) > 0:
@@ -342,14 +342,14 @@ def extract_combined_texture_features(graph_data, verbose=False):
         convert a pytorch geometric graph to a pulser quantum register with texture attributes
     input: 
         graph_data - a torch_geometric.data.data object representing a graph
-        device - pulser device (default: MockDevice)
+        device - pulser device (default: DigitalAnalogDevice)
         scale_factor - factor to scale graph positions
         min_distance - minimal distance between atoms
         texture_feature - which texture feature to use or "combined" for PCA-based combination
     output: 
         a pulser register with atoms positioned according to graph nodes and texture metadata
 """
-def create_register_from_graph(graph_data, device=MockDevice, scale_factor=5.0, min_distance=4.0, texture_feature="pca"):
+def create_register_from_graph(graph_data, device=DigitalAnalogDevice, scale_factor=5.0, min_distance=4.0, texture_feature="pca"):
     # Extract node positions from the graph
     if not hasattr(graph_data, 'pos') or graph_data.pos is None:
         raise ValueError("Graph data must have position information (pos attribute)")
@@ -461,7 +461,7 @@ def create_register_from_graph(graph_data, device=MockDevice, scale_factor=5.0, 
     if not atom_positions:
         raise ValueError("No valid atom positions found. Try adjusting scale_factor.")
     
-    print(f"Creating register with {len(atom_positions)} atoms (max allowed: {max_atoms})")
+    #print(f"Creating register with {len(atom_positions)} atoms (max allowed: {max_atoms})")
     register = Register(atom_positions)
     
     # Attach texture features as metadata

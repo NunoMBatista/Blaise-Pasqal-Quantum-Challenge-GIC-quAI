@@ -1,7 +1,7 @@
 import numpy as np
 import pulser
 from pulser import Pulse, Sequence
-from pulser.devices import MockDevice
+from pulser.devices import DigitalAnalogDevice
 from pulser.waveforms import RampWaveform
 
 

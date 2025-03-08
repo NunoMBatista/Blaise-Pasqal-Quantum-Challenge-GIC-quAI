@@ -4,12 +4,12 @@ import networkx as nx
 from torch_geometric.data import Data
 import pulser as pl
 from pulser.register import Register
-from pulser.devices import MockDevice
+from pulser.devices import DigitalAnalogDevice
 
 
 """
     behaviour: 
-        Check if a graph is compatible with MockDevice and print issues
+        Check if a graph is compatible with DigitalAnalogDevice and print issues
     input: 
         graph_data - a torch_geometric.data.data object
     output: 
@@ -32,7 +32,7 @@ def check_analog_device_compatibility(graph_data):
     
     # Check for positions within device constraints
     if hasattr(graph_data, 'pos') and graph_data.pos is not None:
-        max_radius = getattr(MockDevice, 'max_distance_from_center', 35.0)
+        max_radius = getattr(DigitalAnalogDevice, 'max_distance_from_center', 35.0)
         pos = graph_data.pos.numpy()
         
         # Calculate distances from center
@@ -59,7 +59,7 @@ def check_analog_device_compatibility(graph_data):
     # Check minimum node distance when converted to register
     if hasattr(graph_data, 'pos') and graph_data.pos is not None and graph_data.pos.shape[0] > 1:
         pos = graph_data.pos.numpy()
-        min_dist = MockDevice.min_atom_distance
+        min_dist = DigitalAnalogDevice.min_atom_distance
         
         # Calculate pairwise distances
         for i in range(len(pos)):
@@ -84,7 +84,7 @@ def edge_exists(edge_index, src, dst):
 
 """
     behaviour: 
-        Create a minimal working graph compatible with MockDevice
+        Create a minimal working graph compatible with DigitalAnalogDevice
     input: 
         num_nodes - number of nodes in the graph
     output: 
@@ -130,7 +130,7 @@ def create_minimal_compatible_graph(num_nodes=3):
     output: 
         None (prints debug info)
 """
-def debug_graph_compatibility(graph, device=MockDevice):
+def debug_graph_compatibility(graph, device=DigitalAnalogDevice):
     print(f"\n--- Debugging Graph Compatibility for Graph {graph.id} ---")
     
     # Check base attributes
@@ -150,9 +150,9 @@ def debug_graph_compatibility(graph, device=MockDevice):
     is_compatible, issues = check_analog_device_compatibility(data)
     
     if is_compatible:
-        print("Graph appears to be compatible with MockDevice")
+        print("Graph appears to be compatible with DigitalAnalogDevice")
     else:
-        print("Graph is NOT compatible with MockDevice. Issues found:")
+        print("Graph is NOT compatible with DigitalAnalogDevice. Issues found:")
         for issue in issues:
             print(f" - {issue}")
     
@@ -175,11 +175,11 @@ def debug_graph_compatibility(graph, device=MockDevice):
 
 """
     behaviour: 
-        make a graph compatible with the MockDevice
+        make a graph compatible with the DigitalAnalogDevice
     input: 
         graph_data - a torch_geometric.data.data object
     output: 
-        modified graph_data compatible with MockDevice
+        modified graph_data compatible with DigitalAnalogDevice
 """
 def make_compatible_with_analog_device(graph_data):
     # 1. Check if the graph has necessary attributes
@@ -189,7 +189,7 @@ def make_compatible_with_analog_device(graph_data):
     if not hasattr(graph_data, 'pos') or graph_data.pos is None:
         raise ValueError("Graph must have position information (pos attribute)")
     
-    # 2. MockDevice requires undirected graphs - ensure bidirectional edges
+    # 2. DigitalAnalogDevice requires undirected graphs - ensure bidirectional edges
     edge_index = graph_data.edge_index.numpy()
     edge_set = set()
     
@@ -211,7 +211,7 @@ def make_compatible_with_analog_device(graph_data):
         graph_data.edge_index = torch.tensor(new_edges, dtype=torch.long).t().contiguous()
     
     # 3. Scale positions to fit within device constraints
-    max_radius = getattr(pl.MockDevice, 'max_distance_from_center', 35.0)  # Default to 35μm
+    max_radius = getattr(pl.DigitalAnalogDevice, 'max_distance_from_center', 35.0)  # Default to 35μm
     pos = graph_data.pos.numpy()
     
     # Center around origin

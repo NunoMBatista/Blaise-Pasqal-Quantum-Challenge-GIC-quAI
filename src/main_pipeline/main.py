@@ -36,9 +36,9 @@ plt.ion()
 
 # TODO: ?? DYNAMICALLY CHANGE THE ATOM REGISTER SIZE BASED ON THE IMAGE SIZE ??
 
-N_QUBITS = 10
+N_QUBITS = 15
 MAX_SAMPLES = 200
-REGISTER_DIM = 20 # X*X μm dimension of qubitsA
+REGISTER_DIM = 30 # X*X μm dimension of qubitsA
 
 
 # Create datasets for each class (with labels)
@@ -87,7 +87,7 @@ for i, data in enumerate(tqdm(combined_dataset)):
         graph = TextureAwareGraph(
             id=i,
             data=compatible_data,
-            device=pl.MockDevice
+            device=pl.DigitalAnalogDevice
         )
         
         graph.target = compatible_data.y.item()  # Preserve the class label
@@ -103,9 +103,9 @@ for i, data in enumerate(tqdm(combined_dataset)):
 compiled = []
 
 # Add debug information about device
-print(f"\nUsing device: {pl.MockDevice.name}")
-if hasattr(pl.MockDevice, 'channel_objects'):
-    print(f"Available channels: {pl.MockDevice.channel_objects}")
+print(f"\nUsing device: {pl.DigitalAnalogDevice.name}")
+if hasattr(pl.DigitalAnalogDevice, 'channel_objects'):
+    print(f"Available channels: {pl.DigitalAnalogDevice.channel_objects}")
 else:
     print("Note: Device does not expose available_channels attribute")
 
@@ -128,10 +128,10 @@ for i, graph in enumerate(tqdm(graphs_to_compile)):
         graph.register = register   # Assign it to the graph
         
         try:
-            pulse = graph.compile_pulse(use_texture=True)
+            sequence = graph.compile_pulse(use_texture=True)
             
             # Store the successful compilation
-            compiled.append((graph, original_graph_data, pulse))
+            compiled.append((graph, original_graph_data, sequence))
         except Exception as e:
             print(f"Compilation error for graph {graph.id}: {str(e)}")
             # Try to provide more diagnostic information
@@ -175,7 +175,7 @@ from qek_solver_options import ODESolverOptions
 
 processed_dataset = []
 # Configure the executor with better ODE solver settings upfront
-executor = QutipBackend(device=pl.MockDevice)
+executor = QutipBackend(device=pl.DigitalAnalogDevice)
 # Configure the executor for stability with higher nsteps
 executor = configure_backend_for_stability(executor, nsteps=50000)
 
@@ -195,7 +195,7 @@ async def process_graphs():
                 processed_dataset.append(ProcessedData.from_register(
                     register=graph.register,
                     pulse=compatible_pulse,
-                    device=pl.MockDevice,
+                    device=pl.DigitalAnalogDevice,
                     state_dict=states,
                     target=graph.target
                 ))
@@ -203,13 +203,13 @@ async def process_graphs():
                 if "Excess work done" in str(e):
                     print(f"ODE solver error with graph {graph.id}, retrying with higher nsteps...")
                     # Configure with even higher nsteps for this specific difficult case
-                    temp_executor = configure_backend_for_stability(QutipBackend(device=pl.MockDevice), nsteps=250000)
+                    temp_executor = configure_backend_for_stability(QutipBackend(device=pl.DigitalAnalogDevice), nsteps=250000)
                     states = await temp_executor.run(register=register, pulse=compatible_pulse)
                     
                     processed_dataset.append(ProcessedData.from_register(
                         register=graph.register,
                         pulse=compatible_pulse,
-                        device=pl.MockDevice,
+                        device=pl.DigitalAnalogDevice,
                         state_dict=states,
                         target=graph.target
                     ))
