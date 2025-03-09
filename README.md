@@ -124,15 +124,16 @@ The dataset is stored in **NumPy (.npy) format** and labeled with a CSV file (`l
    For the Pulser-based implementation
    ```sh
    cd code/Pulser_implementation
-   python3 Qadence_QNN.py
+   python3 pipeline/main.py
    ```
    or for the Qadence-based implementation
     ```sh
    cd code/Qadence_implementation
    python3 Qadence_QNN.py
    ```
-
 ---
+
+The code developed in this repository use python 3.10
 
 **GIC-quAI** aims to push the boundaries of AI-driven medical imaging by integrating quantum computing into cancer diagnostics. 🚀
 
