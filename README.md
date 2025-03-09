@@ -98,11 +98,11 @@ The dataset is stored in **NumPy (.npy) format** and labeled with a CSV file (`l
 
 ```plaintext
 📂 GIC-quAI
- ├── 📂 code               # Synthetic datasets
+ ├── 📂 code               # Main codes
  ├── 📂 data               # Synthetic datasets
- ├── 📂 docs               # Synthetic datasets
- ├── 📂 results            # Synthetic datasets
- ├── 📂 test               # Synthetic datasets
+ ├── 📂 docs               # Documentation
+ ├── 📂 results            # Results and benchmarks
+ ├── 📂 test               # MWEs
  ├── .gitignore            # Ignored Files
  ├── requirements.txt      # Required packages 
  ├── README.md             # Project documentation
@@ -112,24 +112,23 @@ The dataset is stored in **NumPy (.npy) format** and labeled with a CSV file (`l
 
 1. **Clone the repository**:
    ```sh
-   git clone https://github.com/your-repo/GIC-quAI.git
+   git clone [https://github.com/your-repo/GIC-quAI.git](https://github.com/pasqal-io/Pasqal_Hackathon_Feb25_Team_02)
    cd GIC-quAI
    ```
 2. **Install dependencies**:
    ```sh
    pip install -r requirements.txt
    ```
-3. **Generate synthetic dataset**:
+3. **Run script**:
+   For the Pulser-based implementation
    ```sh
-   python data/generate_images.py
+   cd code/Pulser_implementation
+   python3 Qadence_QNN.py
    ```
-4. **Train QNN model**:
-   ```sh
-   python models/qadence_qnn.py
-   ```
-5. **Run Pulser-based ML**:
-   ```sh
-   python models/pulser_graph_ml.py
+   or for the Qadence-based implementation
+    ```sh
+   cd code/Qadence_implementation
+   python3 Qadence_QNN.py
    ```
 
 ---
