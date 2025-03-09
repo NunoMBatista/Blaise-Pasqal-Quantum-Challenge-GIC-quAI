@@ -78,6 +78,10 @@ The dataset is stored in **NumPy (.npy) format** and labeled with a CSV file (`l
   - Uses **Pasqal’s neutral atom processors**.
   - Incorporates **Hamiltonian evolutions** for feature extraction.
   - Optimizes **energy-based classification methods**.
+ 
+  **Performance**:
+  - 256x256 Images:
+  - Accuracy: 62.5%
 
 ## Results, Evaluation & Roadmap
 
