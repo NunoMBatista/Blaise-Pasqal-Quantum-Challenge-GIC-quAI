@@ -39,7 +39,7 @@ This script generates a dataset of small grayscale images, some containing rando
 ## Adjusting Parameters
 
 - **IMAGE_SIZE:**  
-  Defines the dimensions of each image (e.g., `8` for an 8x8 image).  
+  Defines the dimensions of each image (e.g., `8` for an 4x4 image).  
 - **NUM_IMAGES:**  
   Sets the total number of images to generate (default: `512`).  
 - **OUTPUT_DIR:**  

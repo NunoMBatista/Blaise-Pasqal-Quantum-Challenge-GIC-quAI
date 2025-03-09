@@ -28,7 +28,7 @@ import seaborn as sns
 from sklearn.model_selection import train_test_split
 
 # Constants
-IMAGE_SIZE = 8  # 8x8 pixels
+IMAGE_SIZE = 4  # 4x4 pixels
 # Paths to image directories
 WITH_ELLIPSE_DIR = "../../data/Qadence_implementation/dataset/with_ellipse"
 WITHOUT_ELLIPSE_DIR = "../../data/Qadence_implementation/dataset/without_ellipse"
