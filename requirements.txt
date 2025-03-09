@@ -136,3 +136,4 @@ urllib3
 wcwidth
 Werkzeug
 yarl
+sklearn
