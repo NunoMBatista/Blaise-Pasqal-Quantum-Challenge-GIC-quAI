@@ -1,0 +1,14 @@
+Test Accuracy: 94.87%
+
+Classification Report:
+              precision    recall  f1-score   support
+
+  No Ellipse       0.91      1.00      0.95        21
+     Ellipse       1.00      0.89      0.94        18
+
+    accuracy                           0.95        39
+   macro avg       0.96      0.94      0.95        39
+weighted avg       0.95      0.95      0.95        39
+
+
+Global Accuracy: 0.9487
