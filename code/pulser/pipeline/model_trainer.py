@@ -3,6 +3,8 @@ from sklearn.model_selection import train_test_split, cross_val_score
 from sklearn.svm import SVC
 from sklearn.metrics import f1_score, balanced_accuracy_score, confusion_matrix, classification_report
 from qek.kernel import QuantumEvolutionKernel as QEK
+from visualization.visualization import plot_confusion_matrix
+
 
 def prepare_dataset(processed_dataset):
     """Prepare dataset for model training"""
@@ -18,6 +20,7 @@ def prepare_dataset(processed_dataset):
     print(f"Polyp (1): {class_counts.get(1, 1)}")
     
     return X, y
+
 
 def split_dataset(X, y, test_size=0.2, random_state=42):
     """Split dataset into training and testing sets"""
@@ -35,6 +38,7 @@ def split_dataset(X, y, test_size=0.2, random_state=42):
     print(f"Class distribution - Testing: No polyp: {y_test.count(0)}, Polyp: {y_test.count(1)}")
     
     return X_train, X_test, y_train, y_test
+
 
 def train_qek_svm_model(X_train, X_test, y_train, y_test, mu=0.5, class_weight='balanced'):
     """Train SVM model with Quantum Evolution Kernel"""
@@ -57,6 +61,7 @@ def train_qek_svm_model(X_train, X_test, y_train, y_test, mu=0.5, class_weight='
     evaluate_model(model, X_test, y_test, y_pred)
     
     return model, y_pred
+
 
 def evaluate_model(model, X_test, y_test, y_pred):
     """Evaluate model performance with various metrics"""
@@ -81,6 +86,8 @@ def evaluate_model(model, X_test, y_test, y_pred):
     print(f"Balanced Accuracy Score: {balanced_accuracy_score(y_test, y_pred)}")
     print("\nConfusion Matrix:")
     print(confusion_matrix(y_test, y_pred))
+    plot_confusion_matrix(y_test, y_pred, ['No Polyp', 'Polyp'])
+       
     print("\nClassification Report:")
     print(classification_report(y_test, y_pred, target_names=['No Polyp', 'Polyp'], zero_division=0))
     

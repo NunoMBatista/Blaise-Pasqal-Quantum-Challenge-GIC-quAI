@@ -4,21 +4,21 @@ import networkx as nx
 from pulser import DigitalAnalogDevice, AnalogDevice, MockDevice
 from matplotlib.colors import Normalize
 import matplotlib.cm as cm
+import seaborn as sns
+from sklearn.metrics import confusion_matrix
 
 
-
+"""
+    behaviour:
+        visualize the texture features of the register
+    input:
+        register - a pulser register object
+        feature_name - which feature to use for coloring (e.g., 'lbp', 'energy', 'combined')
+        cmap - colormap to use
+    output:
+        a matplotlib figure showing the register with texture features
+"""
 def visualize_texture_pulse_effects(graph, pulse_or_sequence, original_data):
-    """
-    Visualize how texture affects pulse parameters.
-    
-    Args:
-        graph: TextureAwareGraph object with register and texture metadata
-        pulse_or_sequence: Either a pulser Pulse object or a pulser Sequence object
-        original_data: Original graph data object
-        
-    Returns:
-        Matplotlib figure with visualizations
-    """
     if not hasattr(graph.register, 'metadata') or 'texture_features' not in graph.register.metadata:
         print("No texture information available in register")
         return plt.figure(figsize=(8, 3))
@@ -350,4 +350,54 @@ def visualize_register_with_connections(register, graph_data=None, title="atom r
     
     plt.title(title)
     plt.tight_layout()
+    return fig
+
+
+"""
+    behaviour:
+        plot a confusion matrix using matplotlib and seaborn
+    input:
+        y_true - ground truth labels
+        y_pred - predicted labels
+        class_names - names of the classes for the axis labels
+    output:
+        a matplotlib figure showing the confusion matrix
+"""
+def plot_confusion_matrix(y_true, y_pred, class_names=['No Polyp', 'Polyp']):
+    # Compute confusion matrix
+    cm = confusion_matrix(y_true, y_pred)
+    
+    # Calculate percentages for annotations
+    cm_sum = np.sum(cm, axis=1, keepdims=True)
+    cm_perc = cm / cm_sum * 100
+    annot = np.empty_like(cm).astype(str)
+    
+    # Format annotations to show both count and percentage
+    for i in range(cm.shape[0]):
+        for j in range(cm.shape[1]):
+            annot[i, j] = f"{cm[i, j]}\n({cm_perc[i, j]:.1f}%)"
+    
+    # Plot using seaborn for a nicer appearance
+    fig, ax = plt.subplots(figsize=(8, 6))
+    sns.heatmap(
+        cm, 
+        annot=annot, 
+        fmt='', 
+        cmap='Blues',
+        cbar=True,
+        square=True,
+        xticklabels=class_names,
+        yticklabels=class_names,
+        ax=ax
+    )
+    
+    # Labels and title
+    ax.set_xlabel('Predicted labels')
+    ax.set_ylabel('True labels')
+    ax.set_title('Confusion Matrix')
+    
+    # Display the plot
+    plt.tight_layout()
+    plt.show()
+    
     return fig
