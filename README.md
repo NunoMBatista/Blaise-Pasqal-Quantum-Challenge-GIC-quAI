@@ -68,6 +68,13 @@ The dataset is stored in **NumPy (.npy) format** and labeled with a CSV file (`l
   - Uses **mini-batch gradient descent**.
   - Optimizers: **Adam, AdamW, and SGD**.
   - Loss Function: **Binary Cross-Entropy with Logits (BCEWithLogitsLoss)**.
+ 
+  - **Performance**:
+  - 4x4 Images:
+  - Accuracy: 90.6%
+  - - 8x8 Images:
+  - Accuracy: 69.1%
+
 
 ### Pulser Graph-Based ML
 
@@ -79,7 +86,7 @@ The dataset is stored in **NumPy (.npy) format** and labeled with a CSV file (`l
   - Incorporates **Hamiltonian evolutions** for feature extraction.
   - Optimizes **energy-based classification methods**.
  
-  **Performance**:
+ - **Performance**:
   - 256x256 Images:
   - Accuracy: 62.5%
 
