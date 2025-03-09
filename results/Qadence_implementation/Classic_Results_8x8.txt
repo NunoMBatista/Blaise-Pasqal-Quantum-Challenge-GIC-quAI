@@ -1,0 +1,14 @@
+st Accuracy: 89.74%
+
+Classification Report:
+              precision    recall  f1-score   support
+
+  No Ellipse       0.84      1.00      0.91        21
+     Ellipse       1.00      0.78      0.88        18
+
+    accuracy                           0.90        39
+   macro avg       0.92      0.89      0.89        39
+weighted avg       0.91      0.90      0.90        39
+
+
+Global Accuracy: 0.8974
