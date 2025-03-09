@@ -6,7 +6,7 @@ from PIL import Image, ImageDraw
 import pandas as pd
 
 # Constants
-IMAGE_SIZE = 8  # 8x8 pixels
+IMAGE_SIZE = 4  # 8x8 pixels
 NUM_IMAGES = 512  # Number of images to generate
 OUTPUT_DIR = "dataset"  # Base output directory
 ELLIPSE_DIR = os.path.join(OUTPUT_DIR, "with_ellipse")  # Subdirectory for images with ellipses
