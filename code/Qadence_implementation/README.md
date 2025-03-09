@@ -54,5 +54,5 @@ This code provides a framework for performing image classification using quantum
 - A confusion matrix heatmap is saved as `confusion_matrix.png`.
 
 ## Notes
-- The code is modular and can be extended to larger image sizes, different datasets, or more complex quantum architectures.
+- The code is modular and can be extended to larger image sizes (resulting in complex circuits that can take a while to execute), different datasets, or more complex quantum architectures.
 - Adjusting the number of training epochs and learning rates may help improve performance.
