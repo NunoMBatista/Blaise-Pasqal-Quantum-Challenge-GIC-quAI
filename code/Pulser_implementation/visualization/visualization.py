@@ -5,8 +5,10 @@ from pulser import DigitalAnalogDevice, AnalogDevice, MockDevice
 from matplotlib.colors import Normalize
 import matplotlib.cm as cm
 import seaborn as sns
+import datetime
 from sklearn.metrics import confusion_matrix
-
+from pipeline.config import RESULTS_DIR
+import os
 
 """
     behaviour:
@@ -363,7 +365,7 @@ def visualize_register_with_connections(register, graph_data=None, title="atom r
     output:
         a matplotlib figure showing the confusion matrix
 """
-def plot_confusion_matrix(y_true, y_pred, class_names=['No Polyp', 'Polyp']):
+def plot_confusion_matrix(y_true, y_pred, class_names=['No Polyp', 'Polyp'], save_results=False, result_dir="./results"):   
     # Compute confusion matrix
     cm = confusion_matrix(y_true, y_pred)
     
@@ -399,5 +401,11 @@ def plot_confusion_matrix(y_true, y_pred, class_names=['No Polyp', 'Polyp']):
     # Display the plot
     plt.tight_layout()
     plt.show()
+
+    global RESULTS_DIR
+    img_dir = os.path.join(RESULTS_DIR, 'quantum_confusion_matrix.png')
+    if save_results:
+        fig.savefig(img_dir)
+        
     
     return fig

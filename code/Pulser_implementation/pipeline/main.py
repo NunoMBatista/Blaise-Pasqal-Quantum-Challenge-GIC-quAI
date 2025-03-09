@@ -78,7 +78,9 @@ def main():
         y_train,
         y_test,
         mu=MU_HYPERPARAMETER,
-        class_weight=CLASS_WEIGHTS
+        class_weight=CLASS_WEIGHTS,
+        save_results=SAVE_RESULTS,
+        result_dir=RESULTS_DIR
     )
     
     # 9. Run cross-validation (optional)

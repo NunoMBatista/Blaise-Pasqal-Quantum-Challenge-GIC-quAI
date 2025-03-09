@@ -3,7 +3,7 @@ from pulser import DigitalAnalogDevice, MockDevice, AnalogDevice
 
 # Constants
 N_QUBITS = 10
-MAX_SAMPLES = 20
+MAX_SAMPLES = 200
 REGISTER_DIM = 20 # X*X μm dimension of qubits
 SLIC_COMPACTNESS = 15
 
@@ -13,6 +13,7 @@ DATA_ROOT = os.path.join(os.path.dirname(__file__), '..', '..', '..', 'data', 'P
 NO_POLYP_DIR = os.path.join(DATA_ROOT, 'no_polyp')
 POLYP_DIR = os.path.join(DATA_ROOT, 'polyp')
 
+RESULTS_DIR = os.path.join(os.path.dirname(__file__), '..', '..', '..', 'results', 'Pulser_implementation', 'quantum')
 
 # Quantum backend settings
 ODE_NSTEPS = 50000
@@ -39,3 +40,5 @@ CLASS_WEIGHTS = {
     1: 1.0
 }
 
+# Save results or not
+SAVE_RESULTS = True
