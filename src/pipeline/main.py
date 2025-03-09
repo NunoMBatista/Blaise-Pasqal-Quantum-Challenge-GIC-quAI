@@ -39,10 +39,9 @@ def main():
         graphs_to_compile,
         original_data,
         register_dim=REGISTER_DIM, 
-        texture_feature=TEXTURE_FEATURE
+        texture_feature=TEXTURE_FEATURE,
+        global_duration_coef=GLOBAL_PULSE_DURATION_COEF
     )
-    
-    print(compiled_graphs[0])
     
     # 4. Visualize example (optional)
     if compiled_graphs and VISUALIZE_EXAMPLES:
@@ -50,7 +49,11 @@ def main():
             compiled_graphs,
             example_index=2
         )
-    
+        visualize_example(
+            compiled_graphs,
+            example_index=210
+        )
+        
     # 5. Execute quantum simulation
     processed_dataset = run_quantum_execution(
         compiled_graphs,
@@ -100,3 +103,4 @@ if __name__ == "__main__":
     print(f"μ hyperparameter: {MU_HYPERPARAMETER}")
     print(f"Class weights: {CLASS_WEIGHTS}")
     print(f"Compactness: {SLIC_COMPACTNESS}")
+    print(f"Global pulse duration coef: {GLOBAL_PULSE_DURATION_COEF}")

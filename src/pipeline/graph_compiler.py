@@ -2,7 +2,7 @@ from tqdm import tqdm
 import pulser as pl
 from graphs.graph_to_register import graph_to_quantum_register
 
-def compile_graphs(graphs_to_compile, original_data, register_dim=30, texture_feature='pca'):
+def compile_graphs(graphs_to_compile, original_data, register_dim=30, texture_feature='pca', global_duration_coef=1):
     """Compile graphs to quantum registers and pulses"""
     compiled = []
     
@@ -22,7 +22,8 @@ def compile_graphs(graphs_to_compile, original_data, register_dim=30, texture_fe
             custom_register = graph_to_quantum_register(
                 original_graph_data, 
                 texture_feature=texture_feature,
-                register_dim=register_dim
+                register_dim=register_dim,
+                global_pulse_coef=global_duration_coef
             )
             
             # Assign register to graph

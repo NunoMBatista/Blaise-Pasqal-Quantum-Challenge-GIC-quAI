@@ -49,43 +49,41 @@ class ParameterOptimizer:
                 "REGISTER_DIM": [20, 30],
                 "TEXTURE_FEATURE": ["energy", "pca"],
                 "MU_HYPERPARAMETER": [0.8, 1.2],
-                "SLIC_COMPACTNESS": [10],
-                "CLASS_WEIGHTS": [
-                    "balanced", 
-                    {0: 1.0, 1: 2.0}
-                ],
+                "SLIC_COMPACTNESS": [0.1, 1.0],
+                "GLOBAL_PULSE_DURATION_COEF": [0.5, 1.0],
+                "ODE_NSTEPS": [25000, 50000],
                 "MAX_SAMPLES": [50]  # Small sample for quick runs
             }
         else:
             # Full parameter grid
             return {
-                "N_QUBITS": [10, 15, 20],
+                "N_QUBITS": [10, 12, 13, 15, 20],
                 "REGISTER_DIM": [20, 30, 40],
+                "SLIC_COMPACTNESS": [0.05, 0.1, 0.5, 1.0, 5.0],
                 "TEXTURE_FEATURE": ["pca", "energy", "homogeneity", "contrast"],
                 "MU_HYPERPARAMETER": [0.5, 0.8, 1.0, 1.2, 1.5],
-                "SLIC_COMPACTNESS": [5, 10, 15],
-                "CLASS_WEIGHTS": [
-                    "balanced", 
-                    {0: 1.0, 1: 1.5},
-                    {0: 1.0, 1: 2.0},
-                    {0: 1.0, 1: 3.0}
-                ],
-                "MAX_SAMPLES": [200]  # Fixed to control runtime
+                "GLOBAL_PULSE_DURATION_COEF": [0.5, 1.0, 1.5, 2.0],
+                "ODE_NSTEPS": [25000, 50000, 100000],
+                "ODE_NSTEPS_HIGH": [100000, 250000],
+                "MAX_SAMPLES": [200, 400]
             }
     
     def run_pipeline(self, params):
         """Run the pipeline with specific parameters"""
         # Set global variables from params
         global N_QUBITS, REGISTER_DIM, TEXTURE_FEATURE, MU_HYPERPARAMETER
-        global SLIC_COMPACTNESS, CLASS_WEIGHTS, MAX_SAMPLES
+        global SLIC_COMPACTNESS, MAX_SAMPLES, GLOBAL_PULSE_DURATION_COEF
+        global ODE_NSTEPS, ODE_NSTEPS_HIGH
         
         N_QUBITS = params["N_QUBITS"]
         REGISTER_DIM = params["REGISTER_DIM"]
         TEXTURE_FEATURE = params["TEXTURE_FEATURE"]
         MU_HYPERPARAMETER = params["MU_HYPERPARAMETER"]
         SLIC_COMPACTNESS = params["SLIC_COMPACTNESS"]
-        CLASS_WEIGHTS = params["CLASS_WEIGHTS"]
         MAX_SAMPLES = params["MAX_SAMPLES"]
+        GLOBAL_PULSE_DURATION_COEF = params.get("GLOBAL_PULSE_DURATION_COEF", 1.0)
+        ODE_NSTEPS = params.get("ODE_NSTEPS", 50000)
+        ODE_NSTEPS_HIGH = params.get("ODE_NSTEPS_HIGH", 250000)
         
         # Load and prepare datasets
         combined_dataset = load_datasets(
@@ -100,7 +98,8 @@ class ParameterOptimizer:
         # Prepare graphs for compilation
         graphs_to_compile, original_data = prepare_graphs_for_compilation(
             combined_dataset,
-            device=DEVICE
+            device=DEVICE,
+            global_duration_coef=GLOBAL_PULSE_DURATION_COEF
         )
         
         # Compile graphs to quantum registers and pulses
@@ -108,7 +107,8 @@ class ParameterOptimizer:
             graphs_to_compile,
             original_data,
             register_dim=REGISTER_DIM, 
-            texture_feature=TEXTURE_FEATURE
+            texture_feature=TEXTURE_FEATURE,
+            global_duration_coef=GLOBAL_PULSE_DURATION_COEF
         )
         
         # Execute quantum simulation
@@ -118,18 +118,19 @@ class ParameterOptimizer:
             nsteps_high=ODE_NSTEPS_HIGH
         )
         
+        print(processed_dataset[0])
+        
         # Prepare for model training
         X, y = prepare_dataset(processed_dataset)
         X_train, X_test, y_train, y_test = split_dataset(X, y)
         
-        # Train and evaluate model
+        # Train and evaluate model - removed class_weight parameter
         model, y_pred = train_qek_svm_model(
             X_train, 
             X_test, 
             y_train, 
             y_test, 
-            mu=MU_HYPERPARAMETER,
-            class_weight=CLASS_WEIGHTS
+            mu=MU_HYPERPARAMETER
         )
         
         # Calculate metrics

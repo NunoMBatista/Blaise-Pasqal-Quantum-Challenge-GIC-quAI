@@ -9,6 +9,15 @@ import pulser as pl
 def load_datasets(no_polyp_dir, polyp_dir, max_samples, n_qubits, use_superpixels=True, compactness=10):
     """Load and combine polyp and non-polyp datasets"""
     
+    polyp_dataset = ImageGraphDataset(
+        img_dir=polyp_dir,
+        max_samples=max_samples,
+        n_segments=n_qubits,
+        use_superpixels=use_superpixels,
+        label=1,  # Label 1 for polyp
+        compactness=compactness
+    )
+    
     # Create datasets for each class (with labels)
     no_polyp_dataset = ImageGraphDataset(
         img_dir=no_polyp_dir,
@@ -19,15 +28,6 @@ def load_datasets(no_polyp_dir, polyp_dir, max_samples, n_qubits, use_superpixel
         compactness=compactness
     )
 
-    polyp_dataset = ImageGraphDataset(
-        img_dir=polyp_dir,
-        max_samples=max_samples,
-        n_segments=n_qubits,
-        use_superpixels=use_superpixels,
-        label=1,  # Label 1 for polyp
-        compactness=compactness
-    )
-
     # Combine datasets
     combined_dataset = no_polyp_dataset + polyp_dataset
     
@@ -35,7 +35,7 @@ def load_datasets(no_polyp_dir, polyp_dir, max_samples, n_qubits, use_superpixel
     
     return combined_dataset
 
-def prepare_graphs_for_compilation(dataset, device=pl.DigitalAnalogDevice):
+def prepare_graphs_for_compilation(dataset, device=pl.DigitalAnalogDevice, global_duration_coef=1):
     """Prepare graphs for quantum compilation"""
     graphs_to_compile = []
     original_data = []  # Store the original data separately for later reference
@@ -50,7 +50,8 @@ def prepare_graphs_for_compilation(dataset, device=pl.DigitalAnalogDevice):
             graph = TextureAwareGraph(
                 id=i,
                 data=compatible_data,
-                device=device
+                device=device,
+                global_duration_coef=global_duration_coef   
             )
             
             graph.target = compatible_data.y.item()  # Preserve the class label

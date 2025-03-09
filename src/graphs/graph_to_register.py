@@ -24,7 +24,7 @@ from utils.register_scaling import scale_positions_to_register_dim
     output: 
         a pulser register object
 """
-def graph_to_quantum_register(graph_data, texture_feature='pca', register_dim=30):
+def graph_to_quantum_register(graph_data, texture_feature='pca', register_dim=30, global_pulse_coef=1):
     """
     Convert a graph to a quantum register with texture information.
     

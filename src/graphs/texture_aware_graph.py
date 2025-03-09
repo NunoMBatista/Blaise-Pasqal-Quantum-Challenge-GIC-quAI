@@ -11,13 +11,14 @@ class TextureAwareGraph(BaseGraph):
         Extension of BaseGraph (from pasqal's QEK implementation) that encodes texture information into quantum pulses.
     """
     
-    def __init__(self, id, data, device, target=None):
+    def __init__(self, id, data, device, target=None, global_duration_coef=1):
         """Initialize with the same parameters as BaseGraph."""
         super().__init__(id=id, data=data, device=device, target=target)
         
         # Default pulse parameters
         self.base_amplitude = 1.0 * 2 * np.pi  # rad/μs
-        self.base_duration = 660  # nanoseconds
+        self.base_duration = 660 # nanoseconds
+        self.global_duration_coef = global_duration_coef
             
             
     """
@@ -112,7 +113,7 @@ class TextureAwareGraph(BaseGraph):
             seq.add(pulse, 'local_pulse')
         
         # Also add rydberg global pulse, even if there is no texture
-        rydberg_duration = 1000  # Standard duration for Rydberg pulse (in ns)
+        rydberg_duration = 1000*self.global_duration_coef  # Standard duration for Rydberg pulse (in ns)
         rydberg_amplitude = 2.5 * np.pi  # rad/μs
         rydberg_pulse = Pulse.ConstantAmplitude(
             amplitude=rydberg_amplitude,

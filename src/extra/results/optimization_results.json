@@ -4,644 +4,260 @@
       "params": {
         "N_QUBITS": 10,
         "REGISTER_DIM": 20,
+        "SLIC_COMPACTNESS": 0.05,
         "TEXTURE_FEATURE": "pca",
         "MU_HYPERPARAMETER": 0.5,
-        "SLIC_COMPACTNESS": 5,
-        "CLASS_WEIGHTS": "balanced",
+        "GLOBAL_PULSE_DURATION_COEF": 0.5,
+        "ODE_NSTEPS": 25000,
+        "ODE_NSTEPS_HIGH": 100000,
         "MAX_SAMPLES": 200
       },
-      "balanced_accuracy": 0.5125,
-      "f1_score": 0.47642221849303573,
-      "runtime_seconds": 69.77483940124512,
-      "compiled_graphs": 396,
-      "processed_dataset": 396,
+      "balanced_accuracy": 0.5019230769230769,
+      "f1_score": 0.5122498274672188,
+      "runtime_seconds": 34.68223452568054,
+      "compiled_graphs": 228,
+      "processed_dataset": 228,
       "success": true
     },
     {
       "params": {
         "N_QUBITS": 10,
         "REGISTER_DIM": 20,
+        "SLIC_COMPACTNESS": 0.05,
         "TEXTURE_FEATURE": "pca",
         "MU_HYPERPARAMETER": 0.5,
-        "SLIC_COMPACTNESS": 5,
-        "CLASS_WEIGHTS": {
-          "0": 1.0,
-          "1": 1.5
-        },
-        "MAX_SAMPLES": 200
+        "GLOBAL_PULSE_DURATION_COEF": 0.5,
+        "ODE_NSTEPS": 25000,
+        "ODE_NSTEPS_HIGH": 100000,
+        "MAX_SAMPLES": 400
       },
-      "balanced_accuracy": 0.5,
-      "f1_score": 0.3333333333333333,
-      "runtime_seconds": 70.01647448539734,
-      "compiled_graphs": 396,
-      "processed_dataset": 396,
+      "balanced_accuracy": 0.47560975609756095,
+      "f1_score": 0.2754521963824289,
+      "runtime_seconds": 71.05170106887817,
+      "compiled_graphs": 449,
+      "processed_dataset": 449,
       "success": true
     },
     {
       "params": {
         "N_QUBITS": 10,
         "REGISTER_DIM": 20,
+        "SLIC_COMPACTNESS": 0.05,
         "TEXTURE_FEATURE": "pca",
         "MU_HYPERPARAMETER": 0.5,
-        "SLIC_COMPACTNESS": 5,
-        "CLASS_WEIGHTS": {
-          "0": 1.0,
-          "1": 2.0
-        },
+        "GLOBAL_PULSE_DURATION_COEF": 0.5,
+        "ODE_NSTEPS": 25000,
+        "ODE_NSTEPS_HIGH": 250000,
         "MAX_SAMPLES": 200
       },
-      "balanced_accuracy": 0.5,
-      "f1_score": 0.3333333333333333,
-      "runtime_seconds": 69.22659492492676,
-      "compiled_graphs": 396,
-      "processed_dataset": 396,
+      "balanced_accuracy": 0.49038461538461536,
+      "f1_score": 0.4938405797101449,
+      "runtime_seconds": 34.89994812011719,
+      "compiled_graphs": 228,
+      "processed_dataset": 228,
       "success": true
     },
     {
       "params": {
         "N_QUBITS": 10,
         "REGISTER_DIM": 20,
+        "SLIC_COMPACTNESS": 0.05,
         "TEXTURE_FEATURE": "pca",
         "MU_HYPERPARAMETER": 0.5,
-        "SLIC_COMPACTNESS": 5,
-        "CLASS_WEIGHTS": {
-          "0": 1.0,
-          "1": 3.0
-        },
-        "MAX_SAMPLES": 200
+        "GLOBAL_PULSE_DURATION_COEF": 0.5,
+        "ODE_NSTEPS": 25000,
+        "ODE_NSTEPS_HIGH": 250000,
+        "MAX_SAMPLES": 400
       },
-      "balanced_accuracy": 0.5,
-      "f1_score": 0.3333333333333333,
-      "runtime_seconds": 70.66047477722168,
-      "compiled_graphs": 396,
-      "processed_dataset": 396,
+      "balanced_accuracy": 0.4878048780487805,
+      "f1_score": 0.28034188034188035,
+      "runtime_seconds": 71.41768789291382,
+      "compiled_graphs": 449,
+      "processed_dataset": 449,
       "success": true
     },
     {
       "params": {
         "N_QUBITS": 10,
         "REGISTER_DIM": 20,
+        "SLIC_COMPACTNESS": 0.05,
         "TEXTURE_FEATURE": "pca",
         "MU_HYPERPARAMETER": 0.5,
-        "SLIC_COMPACTNESS": 10,
-        "CLASS_WEIGHTS": "balanced",
+        "GLOBAL_PULSE_DURATION_COEF": 0.5,
+        "ODE_NSTEPS": 50000,
+        "ODE_NSTEPS_HIGH": 100000,
         "MAX_SAMPLES": 200
       },
-      "balanced_accuracy": 0.5625,
-      "f1_score": 0.5151515151515151,
-      "runtime_seconds": 110.9515540599823,
-      "compiled_graphs": 400,
-      "processed_dataset": 400,
+      "balanced_accuracy": 0.49615384615384617,
+      "f1_score": 0.5042772731281417,
+      "runtime_seconds": 35.11672520637512,
+      "compiled_graphs": 228,
+      "processed_dataset": 228,
       "success": true
     },
     {
       "params": {
         "N_QUBITS": 10,
         "REGISTER_DIM": 20,
+        "SLIC_COMPACTNESS": 0.05,
         "TEXTURE_FEATURE": "pca",
         "MU_HYPERPARAMETER": 0.5,
-        "SLIC_COMPACTNESS": 10,
-        "CLASS_WEIGHTS": {
-          "0": 1.0,
-          "1": 1.5
-        },
-        "MAX_SAMPLES": 200
+        "GLOBAL_PULSE_DURATION_COEF": 0.5,
+        "ODE_NSTEPS": 50000,
+        "ODE_NSTEPS_HIGH": 100000,
+        "MAX_SAMPLES": 400
       },
-      "balanced_accuracy": 0.5,
-      "f1_score": 0.3333333333333333,
-      "runtime_seconds": 108.2270917892456,
-      "compiled_graphs": 400,
-      "processed_dataset": 400,
+      "balanced_accuracy": 0.4634146341463415,
+      "f1_score": 0.2704861111111111,
+      "runtime_seconds": 71.12935948371887,
+      "compiled_graphs": 449,
+      "processed_dataset": 449,
       "success": true
     },
     {
       "params": {
         "N_QUBITS": 10,
         "REGISTER_DIM": 20,
+        "SLIC_COMPACTNESS": 0.05,
         "TEXTURE_FEATURE": "pca",
         "MU_HYPERPARAMETER": 0.5,
-        "SLIC_COMPACTNESS": 10,
-        "CLASS_WEIGHTS": {
-          "0": 1.0,
-          "1": 2.0
-        },
+        "GLOBAL_PULSE_DURATION_COEF": 0.5,
+        "ODE_NSTEPS": 50000,
+        "ODE_NSTEPS_HIGH": 250000,
         "MAX_SAMPLES": 200
       },
-      "balanced_accuracy": 0.5,
-      "f1_score": 0.3333333333333333,
-      "runtime_seconds": 109.07340621948242,
-      "compiled_graphs": 400,
-      "processed_dataset": 400,
+      "balanced_accuracy": 0.5211538461538461,
+      "f1_score": 0.5308924485125858,
+      "runtime_seconds": 34.54860758781433,
+      "compiled_graphs": 228,
+      "processed_dataset": 228,
       "success": true
     },
     {
       "params": {
         "N_QUBITS": 10,
         "REGISTER_DIM": 20,
+        "SLIC_COMPACTNESS": 0.05,
         "TEXTURE_FEATURE": "pca",
         "MU_HYPERPARAMETER": 0.5,
-        "SLIC_COMPACTNESS": 10,
-        "CLASS_WEIGHTS": {
-          "0": 1.0,
-          "1": 3.0
-        },
-        "MAX_SAMPLES": 200
+        "GLOBAL_PULSE_DURATION_COEF": 0.5,
+        "ODE_NSTEPS": 50000,
+        "ODE_NSTEPS_HIGH": 250000,
+        "MAX_SAMPLES": 400
       },
-      "balanced_accuracy": 0.5,
-      "f1_score": 0.3333333333333333,
-      "runtime_seconds": 108.6173586845398,
-      "compiled_graphs": 400,
-      "processed_dataset": 400,
+      "balanced_accuracy": 0.47560975609756095,
+      "f1_score": 0.2754521963824289,
+      "runtime_seconds": 70.49612283706665,
+      "compiled_graphs": 449,
+      "processed_dataset": 449,
       "success": true
     },
     {
       "params": {
         "N_QUBITS": 10,
         "REGISTER_DIM": 20,
+        "SLIC_COMPACTNESS": 0.05,
         "TEXTURE_FEATURE": "pca",
         "MU_HYPERPARAMETER": 0.5,
-        "SLIC_COMPACTNESS": 15,
-        "CLASS_WEIGHTS": "balanced",
+        "GLOBAL_PULSE_DURATION_COEF": 0.5,
+        "ODE_NSTEPS": 100000,
+        "ODE_NSTEPS_HIGH": 100000,
         "MAX_SAMPLES": 200
       },
-      "balanced_accuracy": 0.6125,
-      "f1_score": 0.607532837474284,
-      "runtime_seconds": 107.18852281570435,
-      "compiled_graphs": 400,
-      "processed_dataset": 400,
+      "balanced_accuracy": 0.49038461538461536,
+      "f1_score": 0.4938405797101449,
+      "runtime_seconds": 34.66340613365173,
+      "compiled_graphs": 228,
+      "processed_dataset": 228,
       "success": true
     },
     {
       "params": {
         "N_QUBITS": 10,
         "REGISTER_DIM": 20,
+        "SLIC_COMPACTNESS": 0.05,
         "TEXTURE_FEATURE": "pca",
         "MU_HYPERPARAMETER": 0.5,
-        "SLIC_COMPACTNESS": 15,
-        "CLASS_WEIGHTS": {
-          "0": 1.0,
-          "1": 1.5
-        },
-        "MAX_SAMPLES": 200
+        "GLOBAL_PULSE_DURATION_COEF": 0.5,
+        "ODE_NSTEPS": 100000,
+        "ODE_NSTEPS_HIGH": 100000,
+        "MAX_SAMPLES": 400
       },
-      "balanced_accuracy": 0.5,
-      "f1_score": 0.3333333333333333,
-      "runtime_seconds": 104.52743339538574,
-      "compiled_graphs": 400,
-      "processed_dataset": 400,
+      "balanced_accuracy": 0.4960179193628671,
+      "f1_score": 0.3208801729972433,
+      "runtime_seconds": 70.6622965335846,
+      "compiled_graphs": 449,
+      "processed_dataset": 449,
       "success": true
     },
     {
       "params": {
         "N_QUBITS": 10,
         "REGISTER_DIM": 20,
+        "SLIC_COMPACTNESS": 0.05,
         "TEXTURE_FEATURE": "pca",
         "MU_HYPERPARAMETER": 0.5,
-        "SLIC_COMPACTNESS": 15,
-        "CLASS_WEIGHTS": {
-          "0": 1.0,
-          "1": 2.0
-        },
+        "GLOBAL_PULSE_DURATION_COEF": 0.5,
+        "ODE_NSTEPS": 100000,
+        "ODE_NSTEPS_HIGH": 250000,
         "MAX_SAMPLES": 200
       },
-      "balanced_accuracy": 0.5,
-      "f1_score": 0.3333333333333333,
-      "runtime_seconds": 105.71765041351318,
-      "compiled_graphs": 400,
-      "processed_dataset": 400,
+      "balanced_accuracy": 0.5211538461538461,
+      "f1_score": 0.5308924485125858,
+      "runtime_seconds": 34.695730686187744,
+      "compiled_graphs": 228,
+      "processed_dataset": 228,
       "success": true
     },
     {
       "params": {
         "N_QUBITS": 10,
         "REGISTER_DIM": 20,
+        "SLIC_COMPACTNESS": 0.05,
         "TEXTURE_FEATURE": "pca",
         "MU_HYPERPARAMETER": 0.5,
-        "SLIC_COMPACTNESS": 15,
-        "CLASS_WEIGHTS": {
-          "0": 1.0,
-          "1": 3.0
-        },
-        "MAX_SAMPLES": 200
+        "GLOBAL_PULSE_DURATION_COEF": 0.5,
+        "ODE_NSTEPS": 100000,
+        "ODE_NSTEPS_HIGH": 250000,
+        "MAX_SAMPLES": 400
       },
-      "balanced_accuracy": 0.5,
-      "f1_score": 0.3333333333333333,
-      "runtime_seconds": 107.67381286621094,
-      "compiled_graphs": 400,
-      "processed_dataset": 400,
+      "balanced_accuracy": 0.4878048780487805,
+      "f1_score": 0.28034188034188035,
+      "runtime_seconds": 70.51771283149719,
+      "compiled_graphs": 449,
+      "processed_dataset": 449,
       "success": true
     },
     {
       "params": {
         "N_QUBITS": 10,
         "REGISTER_DIM": 20,
+        "SLIC_COMPACTNESS": 0.05,
         "TEXTURE_FEATURE": "pca",
-        "MU_HYPERPARAMETER": 0.8,
-        "SLIC_COMPACTNESS": 5,
-        "CLASS_WEIGHTS": "balanced",
+        "MU_HYPERPARAMETER": 0.5,
+        "GLOBAL_PULSE_DURATION_COEF": 1.0,
+        "ODE_NSTEPS": 25000,
+        "ODE_NSTEPS_HIGH": 100000,
         "MAX_SAMPLES": 200
       },
-      "balanced_accuracy": 0.525,
-      "f1_score": 0.4861392832995267,
-      "runtime_seconds": 66.96345782279968,
-      "compiled_graphs": 396,
-      "processed_dataset": 396,
-      "success": true
-    },
-    {
-      "params": {
-        "N_QUBITS": 10,
-        "REGISTER_DIM": 20,
-        "TEXTURE_FEATURE": "pca",
-        "MU_HYPERPARAMETER": 0.8,
-        "SLIC_COMPACTNESS": 5,
-        "CLASS_WEIGHTS": {
-          "0": 1.0,
-          "1": 1.5
-        },
-        "MAX_SAMPLES": 200
-      },
-      "balanced_accuracy": 0.5,
-      "f1_score": 0.3333333333333333,
-      "runtime_seconds": 67.61894917488098,
-      "compiled_graphs": 396,
-      "processed_dataset": 396,
-      "success": true
-    },
-    {
-      "params": {
-        "N_QUBITS": 10,
-        "REGISTER_DIM": 20,
-        "TEXTURE_FEATURE": "pca",
-        "MU_HYPERPARAMETER": 0.8,
-        "SLIC_COMPACTNESS": 5,
-        "CLASS_WEIGHTS": {
-          "0": 1.0,
-          "1": 2.0
-        },
-        "MAX_SAMPLES": 200
-      },
-      "balanced_accuracy": 0.5,
-      "f1_score": 0.3333333333333333,
-      "runtime_seconds": 67.78462100028992,
-      "compiled_graphs": 396,
-      "processed_dataset": 396,
-      "success": true
-    },
-    {
-      "params": {
-        "N_QUBITS": 10,
-        "REGISTER_DIM": 20,
-        "TEXTURE_FEATURE": "pca",
-        "MU_HYPERPARAMETER": 0.8,
-        "SLIC_COMPACTNESS": 5,
-        "CLASS_WEIGHTS": {
-          "0": 1.0,
-          "1": 3.0
-        },
-        "MAX_SAMPLES": 200
-      },
-      "balanced_accuracy": 0.5,
-      "f1_score": 0.3333333333333333,
-      "runtime_seconds": 67.12444067001343,
-      "compiled_graphs": 396,
-      "processed_dataset": 396,
-      "success": true
-    },
-    {
-      "params": {
-        "N_QUBITS": 10,
-        "REGISTER_DIM": 20,
-        "TEXTURE_FEATURE": "pca",
-        "MU_HYPERPARAMETER": 0.8,
-        "SLIC_COMPACTNESS": 10,
-        "CLASS_WEIGHTS": "balanced",
-        "MAX_SAMPLES": 200
-      },
-      "balanced_accuracy": 0.6125,
-      "f1_score": 0.5893359827786057,
-      "runtime_seconds": 108.69822716712952,
-      "compiled_graphs": 400,
-      "processed_dataset": 400,
-      "success": true
-    },
-    {
-      "params": {
-        "N_QUBITS": 10,
-        "REGISTER_DIM": 20,
-        "TEXTURE_FEATURE": "pca",
-        "MU_HYPERPARAMETER": 0.8,
-        "SLIC_COMPACTNESS": 10,
-        "CLASS_WEIGHTS": {
-          "0": 1.0,
-          "1": 1.5
-        },
-        "MAX_SAMPLES": 200
-      },
-      "balanced_accuracy": 0.5,
-      "f1_score": 0.3333333333333333,
-      "runtime_seconds": 106.9792959690094,
-      "compiled_graphs": 400,
-      "processed_dataset": 400,
-      "success": true
-    },
-    {
-      "params": {
-        "N_QUBITS": 10,
-        "REGISTER_DIM": 20,
-        "TEXTURE_FEATURE": "pca",
-        "MU_HYPERPARAMETER": 0.8,
-        "SLIC_COMPACTNESS": 10,
-        "CLASS_WEIGHTS": {
-          "0": 1.0,
-          "1": 2.0
-        },
-        "MAX_SAMPLES": 200
-      },
-      "balanced_accuracy": 0.5,
-      "f1_score": 0.3333333333333333,
-      "runtime_seconds": 108.14154505729675,
-      "compiled_graphs": 400,
-      "processed_dataset": 400,
-      "success": true
-    },
-    {
-      "params": {
-        "N_QUBITS": 10,
-        "REGISTER_DIM": 20,
-        "TEXTURE_FEATURE": "pca",
-        "MU_HYPERPARAMETER": 0.8,
-        "SLIC_COMPACTNESS": 10,
-        "CLASS_WEIGHTS": {
-          "0": 1.0,
-          "1": 3.0
-        },
-        "MAX_SAMPLES": 200
-      },
-      "balanced_accuracy": 0.5,
-      "f1_score": 0.3333333333333333,
-      "runtime_seconds": 107.35305595397949,
-      "compiled_graphs": 400,
-      "processed_dataset": 400,
-      "success": true
-    },
-    {
-      "params": {
-        "N_QUBITS": 10,
-        "REGISTER_DIM": 20,
-        "TEXTURE_FEATURE": "pca",
-        "MU_HYPERPARAMETER": 0.8,
-        "SLIC_COMPACTNESS": 15,
-        "CLASS_WEIGHTS": "balanced",
-        "MAX_SAMPLES": 200
-      },
-      "balanced_accuracy": 0.6,
-      "f1_score": 0.5959595959595959,
-      "runtime_seconds": 106.27842926979065,
-      "compiled_graphs": 400,
-      "processed_dataset": 400,
-      "success": true
-    },
-    {
-      "params": {
-        "N_QUBITS": 10,
-        "REGISTER_DIM": 20,
-        "TEXTURE_FEATURE": "pca",
-        "MU_HYPERPARAMETER": 0.8,
-        "SLIC_COMPACTNESS": 15,
-        "CLASS_WEIGHTS": {
-          "0": 1.0,
-          "1": 1.5
-        },
-        "MAX_SAMPLES": 200
-      },
-      "balanced_accuracy": 0.5,
-      "f1_score": 0.3333333333333333,
-      "runtime_seconds": 105.67329478263855,
-      "compiled_graphs": 400,
-      "processed_dataset": 400,
-      "success": true
-    },
-    {
-      "params": {
-        "N_QUBITS": 10,
-        "REGISTER_DIM": 20,
-        "TEXTURE_FEATURE": "pca",
-        "MU_HYPERPARAMETER": 0.8,
-        "SLIC_COMPACTNESS": 15,
-        "CLASS_WEIGHTS": {
-          "0": 1.0,
-          "1": 2.0
-        },
-        "MAX_SAMPLES": 200
-      },
-      "balanced_accuracy": 0.5,
-      "f1_score": 0.3333333333333333,
-      "runtime_seconds": 105.96932482719421,
-      "compiled_graphs": 400,
-      "processed_dataset": 400,
-      "success": true
-    },
-    {
-      "params": {
-        "N_QUBITS": 10,
-        "REGISTER_DIM": 20,
-        "TEXTURE_FEATURE": "pca",
-        "MU_HYPERPARAMETER": 0.8,
-        "SLIC_COMPACTNESS": 15,
-        "CLASS_WEIGHTS": {
-          "0": 1.0,
-          "1": 3.0
-        },
-        "MAX_SAMPLES": 200
-      },
-      "balanced_accuracy": 0.5,
-      "f1_score": 0.3333333333333333,
-      "runtime_seconds": 106.2754065990448,
-      "compiled_graphs": 400,
-      "processed_dataset": 400,
-      "success": true
-    },
-    {
-      "params": {
-        "N_QUBITS": 10,
-        "REGISTER_DIM": 20,
-        "TEXTURE_FEATURE": "pca",
-        "MU_HYPERPARAMETER": 1.0,
-        "SLIC_COMPACTNESS": 5,
-        "CLASS_WEIGHTS": "balanced",
-        "MAX_SAMPLES": 200
-      },
-      "balanced_accuracy": 0.525,
-      "f1_score": 0.49333333333333335,
-      "runtime_seconds": 66.89769506454468,
-      "compiled_graphs": 396,
-      "processed_dataset": 396,
-      "success": true
-    },
-    {
-      "params": {
-        "N_QUBITS": 10,
-        "REGISTER_DIM": 20,
-        "TEXTURE_FEATURE": "pca",
-        "MU_HYPERPARAMETER": 1.0,
-        "SLIC_COMPACTNESS": 5,
-        "CLASS_WEIGHTS": {
-          "0": 1.0,
-          "1": 1.5
-        },
-        "MAX_SAMPLES": 200
-      },
-      "balanced_accuracy": 0.5,
-      "f1_score": 0.3333333333333333,
-      "runtime_seconds": 68.70171332359314,
-      "compiled_graphs": 396,
-      "processed_dataset": 396,
-      "success": true
-    },
-    {
-      "params": {
-        "N_QUBITS": 10,
-        "REGISTER_DIM": 20,
-        "TEXTURE_FEATURE": "pca",
-        "MU_HYPERPARAMETER": 1.0,
-        "SLIC_COMPACTNESS": 5,
-        "CLASS_WEIGHTS": {
-          "0": 1.0,
-          "1": 2.0
-        },
-        "MAX_SAMPLES": 200
-      },
-      "balanced_accuracy": 0.5,
-      "f1_score": 0.3333333333333333,
-      "runtime_seconds": 67.84977722167969,
-      "compiled_graphs": 396,
-      "processed_dataset": 396,
-      "success": true
-    },
-    {
-      "params": {
-        "N_QUBITS": 10,
-        "REGISTER_DIM": 20,
-        "TEXTURE_FEATURE": "pca",
-        "MU_HYPERPARAMETER": 1.0,
-        "SLIC_COMPACTNESS": 5,
-        "CLASS_WEIGHTS": {
-          "0": 1.0,
-          "1": 3.0
-        },
-        "MAX_SAMPLES": 200
-      },
-      "balanced_accuracy": 0.5,
-      "f1_score": 0.3333333333333333,
-      "runtime_seconds": 68.5049991607666,
-      "compiled_graphs": 396,
-      "processed_dataset": 396,
-      "success": true
-    },
-    {
-      "params": {
-        "N_QUBITS": 10,
-        "REGISTER_DIM": 20,
-        "TEXTURE_FEATURE": "pca",
-        "MU_HYPERPARAMETER": 1.0,
-        "SLIC_COMPACTNESS": 10,
-        "CLASS_WEIGHTS": "balanced",
-        "MAX_SAMPLES": 200
-      },
-      "balanced_accuracy": 0.5625,
-      "f1_score": 0.5230795435189917,
-      "runtime_seconds": 108.4641318321228,
-      "compiled_graphs": 400,
-      "processed_dataset": 400,
-      "success": true
-    },
-    {
-      "params": {
-        "N_QUBITS": 10,
-        "REGISTER_DIM": 20,
-        "TEXTURE_FEATURE": "pca",
-        "MU_HYPERPARAMETER": 1.0,
-        "SLIC_COMPACTNESS": 10,
-        "CLASS_WEIGHTS": {
-          "0": 1.0,
-          "1": 1.5
-        },
-        "MAX_SAMPLES": 200
-      },
-      "balanced_accuracy": 0.5,
-      "f1_score": 0.3333333333333333,
-      "runtime_seconds": 108.19177293777466,
-      "compiled_graphs": 400,
-      "processed_dataset": 400,
-      "success": true
-    },
-    {
-      "params": {
-        "N_QUBITS": 10,
-        "REGISTER_DIM": 20,
-        "TEXTURE_FEATURE": "pca",
-        "MU_HYPERPARAMETER": 1.0,
-        "SLIC_COMPACTNESS": 10,
-        "CLASS_WEIGHTS": {
-          "0": 1.0,
-          "1": 2.0
-        },
-        "MAX_SAMPLES": 200
-      },
-      "balanced_accuracy": 0.5,
-      "f1_score": 0.3333333333333333,
-      "runtime_seconds": 108.3797070980072,
-      "compiled_graphs": 400,
-      "processed_dataset": 400,
-      "success": true
-    },
-    {
-      "params": {
-        "N_QUBITS": 10,
-        "REGISTER_DIM": 20,
-        "TEXTURE_FEATURE": "pca",
-        "MU_HYPERPARAMETER": 1.0,
-        "SLIC_COMPACTNESS": 10,
-        "CLASS_WEIGHTS": {
-          "0": 1.0,
-          "1": 3.0
-        },
-        "MAX_SAMPLES": 200
-      },
-      "balanced_accuracy": 0.5,
-      "f1_score": 0.3333333333333333,
-      "runtime_seconds": 108.40980648994446,
-      "compiled_graphs": 400,
-      "processed_dataset": 400,
-      "success": true
-    },
-    {
-      "params": {
-        "N_QUBITS": 10,
-        "REGISTER_DIM": 20,
-        "TEXTURE_FEATURE": "pca",
-        "MU_HYPERPARAMETER": 1.0,
-        "SLIC_COMPACTNESS": 15,
-        "CLASS_WEIGHTS": "balanced",
-        "MAX_SAMPLES": 200
-      },
-      "balanced_accuracy": 0.6125,
-      "f1_score": 0.607532837474284,
-      "runtime_seconds": 107.04421877861023,
-      "compiled_graphs": 400,
-      "processed_dataset": 400,
+      "balanced_accuracy": 0.5211538461538461,
+      "f1_score": 0.5308924485125858,
+      "runtime_seconds": 34.69038414955139,
+      "compiled_graphs": 228,
+      "processed_dataset": 228,
       "success": true
     }
   ],
   "best_params": {
     "N_QUBITS": 10,
     "REGISTER_DIM": 20,
+    "SLIC_COMPACTNESS": 0.05,
     "TEXTURE_FEATURE": "pca",
     "MU_HYPERPARAMETER": 0.5,
-    "SLIC_COMPACTNESS": 15,
-    "CLASS_WEIGHTS": "balanced",
+    "GLOBAL_PULSE_DURATION_COEF": 0.5,
+    "ODE_NSTEPS": 50000,
+    "ODE_NSTEPS_HIGH": 250000,
     "MAX_SAMPLES": 200
   },
-  "best_score": 0.6125
+  "best_score": 0.5211538461538461
 }

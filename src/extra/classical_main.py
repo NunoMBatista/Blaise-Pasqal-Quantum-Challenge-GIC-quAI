@@ -1,3 +1,6 @@
+import sys
+from pathlib import Path
+sys.path.append(str(Path(__file__).parent.parent))
 import os
 import numpy as np
 import matplotlib.pyplot as plt
@@ -17,8 +20,8 @@ from skimage.measure import regionprops
 from skimage.segmentation import slic
 
 # Specify the directories 
-no_polyp_dir = os.path.join(os.getcwd(), 'dataset', 'synthetic_colon_data', 'no_polyp')
-polyp_dir = os.path.join(os.getcwd(), 'dataset', 'synthetic_colon_data', 'polyp')
+no_polyp_dir = os.path.join(os.getcwd(), '..', 'dataset', 'no_polyp')
+polyp_dir = os.path.join(os.getcwd(), '..', 'dataset', 'polyp')
 print(f"Loading data from:\n- No polyp: {no_polyp_dir}\n- Polyp: {polyp_dir}")
 
 # Parameters
