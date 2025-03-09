@@ -59,8 +59,7 @@ def main():
     processed_dataset = run_quantum_execution(
         compiled_graphs,
         nsteps=ODE_NSTEPS,
-        nsteps_high=ODE_NSTEPS_HIGH,
-        async_execution=True
+        nsteps_high=ODE_NSTEPS_HIGH
     )
     
     # 6. Visualize processed data (optional)
