@@ -1,10 +1,13 @@
 import numpy as np
+import os
+import json
+import datetime
 from sklearn.model_selection import train_test_split, cross_val_score
 from sklearn.svm import SVC
 from sklearn.metrics import f1_score, balanced_accuracy_score, confusion_matrix, classification_report
 from qek.kernel import QuantumEvolutionKernel as QEK
 from visualization.visualization import plot_confusion_matrix
-
+from pipeline.config import RESULTS_DIR
 
 def prepare_dataset(processed_dataset):
     """Prepare dataset for model training"""
@@ -40,7 +43,7 @@ def split_dataset(X, y, test_size=0.2, random_state=42):
     return X_train, X_test, y_train, y_test
 
 
-def train_qek_svm_model(X_train, X_test, y_train, y_test, mu=0.5, class_weight='balanced'):
+def train_qek_svm_model(X_train, X_test, y_train, y_test, mu=0.5, class_weight='balanced', save_results=False, result_dir="./results"):
     """Train SVM model with Quantum Evolution Kernel"""
     # Initialize kernel
     qek_kernel = QEK(mu=mu)
@@ -58,19 +61,43 @@ def train_qek_svm_model(X_train, X_test, y_train, y_test, mu=0.5, class_weight='
     y_pred = model.predict(X_test)
     
     # Evaluate model
-    evaluate_model(model, X_test, y_test, y_pred)
+    evaluate_model(model, X_test, y_test, y_pred, save_results=save_results, result_dir=result_dir)
     
     return model, y_pred
 
 
-def evaluate_model(model, X_test, y_test, y_pred):
+def evaluate_model(model, X_test, y_test, y_pred, save_results=False, result_dir=RESULTS_DIR):
     """Evaluate model performance with various metrics"""
+    
+    global RESULTS_DIR
     print("\nModel Prediction Analysis:")
     unique_predictions = np.unique(y_pred)
     print(f"Unique predicted classes: {unique_predictions}")
     print(f"Number of predictions for each class: {np.bincount(y_pred if isinstance(y_pred, np.ndarray) else np.array(y_pred, dtype=int))}")
     print(f"True class distribution: {np.bincount(y_test if isinstance(y_test, np.ndarray) else np.array(y_test, dtype=int))}")
 
+    # Calculate metrics
+    f1 = f1_score(y_test, y_pred, average='weighted', zero_division=0)
+    balanced_acc = balanced_accuracy_score(y_test, y_pred)
+    conf_matrix = confusion_matrix(y_test, y_pred).tolist()
+    
+    # Prepare results dictionary
+    results = {
+        "timestamp": datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S"),
+        "metrics": {
+            "f1_score": float(f1),
+            "balanced_accuracy": float(balanced_acc),
+            "confusion_matrix": conf_matrix,
+        },
+        "predictions": {
+            "unique_classes": unique_predictions.tolist(),
+            "class_distribution": {
+                "predictions": np.bincount(np.array(y_pred, dtype=int)).tolist(),
+                "true_labels": np.bincount(np.array(y_test, dtype=int)).tolist()
+            }
+        }
+    }
+    
     # Show prediction probabilities if available
     if hasattr(model, 'predict_proba'):
         try:
@@ -78,18 +105,40 @@ def evaluate_model(model, X_test, y_test, y_pred):
             print("\nPrediction probabilities:")
             print(f"Mean probability for class 0: {np.mean(proba[:, 0]):.4f}")
             print(f"Mean probability for class 1: {np.mean(proba[:, 1]):.4f}")
+            
+            results["predictions"]["probabilities"] = {
+                "mean_class_0": float(np.mean(proba[:, 0])),
+                "mean_class_1": float(np.mean(proba[:, 1]))
+            }
         except Exception as e:
             print(f"Could not get prediction probabilities: {e}")
 
     print("\nEvaluation Results:")
-    print(f"F1 Score: {f1_score(y_test, y_pred, average='weighted', zero_division=0)}")
-    print(f"Balanced Accuracy Score: {balanced_accuracy_score(y_test, y_pred)}")
+    print(f"F1 Score: {f1}")
+    print(f"Balanced Accuracy Score: {balanced_acc}")
     print("\nConfusion Matrix:")
     print(confusion_matrix(y_test, y_pred))
-    plot_confusion_matrix(y_test, y_pred, ['No Polyp', 'Polyp'])
+    plot_confusion_matrix(y_test, y_pred, ['No Polyp', 'Polyp'], save_results=save_results, result_dir=result_dir)
        
     print("\nClassification Report:")
+    report = classification_report(y_test, y_pred, target_names=['No Polyp', 'Polyp'], zero_division=0, output_dict=True)
     print(classification_report(y_test, y_pred, target_names=['No Polyp', 'Polyp'], zero_division=0))
+    results["metrics"]["classification_report"] = report
+    
+    # Save results to JSON file if requested
+    if save_results:
+        # Create result directory if it doesn't exist
+        if not os.path.exists(result_dir):
+            os.makedirs(result_dir)
+            
+        # Create filename with timestamp
+        filename = f"model_evaluation_{results['timestamp']}.json"
+        filepath = os.path.join(result_dir, filename)
+        
+        # Save to file
+        with open(filepath, 'w') as f:
+            json.dump(results, f, indent=4)
+        print(f"\nResults saved to: {filepath}")
     
     analyze_predictions(model, X_test, y_test, y_pred)
     
