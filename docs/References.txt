@@ -1,0 +1,29 @@
+[WHO24] World Health Organization https://www.who.int/data/gho/data/themes/topics/sdg-target-3_4-noncommunicable-diseases-and-mental-health (accessed February 2025)
+
+[UEG24] https://ueg.eu/research/white-book-2
+
+[CAR23] Carrinho, Pedro, and Gabriel Falcao. "Highly accurate and fast YOLOv4-Based polyp detection." Expert Systems with Applications, Elsevier, 232 (2023): 120834.
+
+[SUN05] Sung, Joseph JY, James YW Lau, K. L. Goh, and W. K. Leung. "Increasing incidence of colorectal cancer in Asia: implications for screening." The Lancet Oncology 6, no. 11 (2005): 871-876.
+
+[ARH22] Arhin, Nina, Paddy Ssentongo, Morris Taylor, Elizabeth Josephine Olecki, Colette Pameijer, Chan Shen, John Oh, and Cathy Eng. "Age-standardised incidence rate and epidemiology of colorectal cancer in Africa: a systematic review and meta-analysis." BMJ open 12, no. 1 (2022): e052376.
+
+[WCR22] World Cancer Research Fund (colorectal cancer statistics) https://www.wcrf.org/cancer-trends/colorectal-cancer-statistics/ (accessed February 2025)
+
+[GUD24] Guddanti, Sai Sakunthala, Apurva Padhye, Anil Prabhakar, and Sridhar Tayur. "Pneumonia detection by binary classification: classical, quantum, and hybrid approaches for support vector machine (SVM)." Frontiers in Computer Science 5 (2024): 1286657.
+
+[STR20] Strubell, Emma, Ananya Ganesh, and Andrew McCallum. "Energy and policy considerations for modern deep learning research." In Proceedings of the AAAI conference on artificial intelligence, vol. 34, no. 09, pp. 13693-13696 (2020).
+
+[PAS24] Pasqal. Quantum Computing to Greener Calculations. https://www.pasqal.com/news/quantum-computing-rethinking-energy-consumption/ (accessed February 2025)
+
+[EET24] Román Orús. How Quantum Computing Can Help Make AI Greener. EE Time Europe, September 2023.
+
+[FEL22] Fellous-Asiani, M., J. H. Chai, Y. Thonnart, H. K. Ng, R. S. Whitney, and A. Auffèves. "Optimizing resource efficiencies for scalable full-stack quantum computers (2022)." arXiv preprint arXiv:2209.05469.
+
+[QuE24b] Large-scale quantum reservoir learning with an analog quantum computer
+https://www.quera.com/blog-posts/large-scale-quantum-reservoir-learning-with-an-analog-quantum-computer
+(accessed February 2025)
+
+[HAU23] Haug, Tobias, Chris N. Self, and M. S. Kim. "Quantum machine learning of large datasets using randomized measurements." Machine Learning: Science and Technology 4, no. 1 (2023): 015005. 
+
+[HAR20] Harrow, Aram W. "Small quantum computers and large classical data sets." arXiv preprint arXiv:2004.00026 (2020).
