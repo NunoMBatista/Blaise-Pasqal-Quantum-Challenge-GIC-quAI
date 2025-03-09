@@ -13,7 +13,7 @@ import numpy as np
 
 class ImageGraphDataset(Dataset):
     def __init__(self, img_dir, transform=None, pre_transform=None, max_samples=100, 
-                 n_segments=20, use_superpixels=True, label=None, compactness=10):
+                n_segments=20, use_superpixels=True, label=None, compactness=10):
         """
         behaviour:
             Creates a dataset of graphs from images.

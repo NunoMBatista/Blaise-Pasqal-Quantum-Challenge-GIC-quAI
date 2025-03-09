@@ -1,6 +1,7 @@
 import sys
 from pathlib import Path
 sys.path.append(str(Path(__file__).parent.parent))
+print(sys.path)
 import matplotlib.pyplot as plt
 import pulser as pl
 
@@ -58,7 +59,8 @@ def main():
     processed_dataset = run_quantum_execution(
         compiled_graphs,
         nsteps=ODE_NSTEPS,
-        nsteps_high=ODE_NSTEPS_HIGH
+        nsteps_high=ODE_NSTEPS_HIGH,
+        async_execution=True
     )
     
     # 6. Visualize processed data (optional)
