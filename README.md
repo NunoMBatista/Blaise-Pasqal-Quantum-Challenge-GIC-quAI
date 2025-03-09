@@ -120,6 +120,7 @@ The dataset is stored in **NumPy (.npy) format** and labeled with a CSV file (`l
    pip install -r requirements.txt
    ```
 3. **Run script**:
+   
    For the Pulser-based implementation
    ```sh
    cd code/Pulser_implementation
