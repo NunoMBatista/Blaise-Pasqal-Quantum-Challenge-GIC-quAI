@@ -2,7 +2,7 @@ import os
 from pulser import DigitalAnalogDevice, MockDevice, AnalogDevice
 
 # Constants
-N_QUBITS = 10
+N_QUBITS = 7
 MAX_SAMPLES = 200
 REGISTER_DIM = 20 # X*X μm dimension of qubits
 SLIC_COMPACTNESS = 15
