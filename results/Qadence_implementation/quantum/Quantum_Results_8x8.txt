@@ -1,0 +1,6 @@
+HEA depth       Learning Rate   Epochs      Final Loss      False Negatives     False Positives     Accuracy
+
+4               0.1             3000        0.40            37.2%               19.6%               69.1%
+
+
+
