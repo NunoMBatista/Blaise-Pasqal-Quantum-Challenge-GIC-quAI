@@ -71,9 +71,9 @@ The dataset is stored in **NumPy (.npy) format** and labeled with a CSV file (`l
  
   - **Performance**:
   - 4x4 Images:
-  - Accuracy: 90.6%
-  - - 8x8 Images:
-  - Accuracy: 69.1%
+  - -Accuracy: 90.6%
+  - 8x8 Images:
+  - - Accuracy: 69.1%
 
 
 ### Pulser Graph-Based ML
@@ -88,7 +88,7 @@ The dataset is stored in **NumPy (.npy) format** and labeled with a CSV file (`l
  
  - **Performance**:
   - 256x256 Images:
-  - Accuracy: 62.5%
+  - - Accuracy: 62.5%
 
 ## Results, Evaluation & Roadmap
 
