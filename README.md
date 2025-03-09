@@ -91,13 +91,13 @@ The dataset is stored in **NumPy (.npy) format** and labeled with a CSV file (`l
 - **Confusion Matrix**: Visualizing misclassifications.
 - **Energy Efficiency**: Evaluating potential energy savings vs. classical HPC.
 
--  Quadence-based Implementation Performance:
+# Quadence-based Implementation Performance:
   - 4x4 Images:
   - - Accuracy: 90.6%
   - 8x8 Images:
   - - Accuracy: 69.1%
    
-  -  Pulser-based Implementation Performance:
+ # Pulser-based Implementation Performance:
   - 256x256 Images:
   - - Accuracy: 62.5%
 
