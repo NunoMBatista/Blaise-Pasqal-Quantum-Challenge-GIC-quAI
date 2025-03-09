@@ -112,8 +112,8 @@ The dataset is stored in **NumPy (.npy) format** and labeled with a CSV file (`l
 
 1. **Clone the repository**:
    ```sh
-   git clone [https://github.com/your-repo/GIC-quAI.git](https://github.com/pasqal-io/Pasqal_Hackathon_Feb25_Team_02)
-   cd GIC-quAI
+   git clone https://github.com/pasqal-io/Pasqal_Hackathon_Feb25_Team_02
+   cd Pasqal_Hackathon_Feb25_Team_02
    ```
 2. **Install dependencies**:
    ```sh
