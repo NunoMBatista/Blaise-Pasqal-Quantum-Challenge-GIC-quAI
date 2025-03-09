@@ -21,7 +21,7 @@ This approach focuses on encoding grayscale images into quantum states using **F
 
 - **Quantum Encoding:** Images are transformed into quantum states for efficient processing.
 - **Variational Quantum Circuit (VQC):** Utilized for training and inference.
-- **Synthetic Dataset:** 8×8 grayscale images with gradient backgrounds and ellipses.
+- **Synthetic Dataset:** 4×4 grayscale images with gradient backgrounds and ellipses.
 
 ### Pulser Graph-Based ML
 
@@ -48,7 +48,7 @@ Two main quantum-enhanced AI techniques are explored:
 
 To optimize the quantum image processing pipeline, a controlled synthetic dataset is created:
 
-- **Quadence-based QNNs**: 8×8 grayscale images with gradient backgrounds and ellipses.
+- **Quadence-based QNNs**: 4×4 grayscale images with gradient backgrounds and ellipses.
 - **Pulser-based Implementation**: 256×256 colonoscopy-like images with polyp segmentation.
 
 The dataset is stored in **NumPy (.npy) format** and labeled with a CSV file (`labels.csv`).
